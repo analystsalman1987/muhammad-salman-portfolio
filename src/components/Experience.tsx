@@ -83,6 +83,7 @@ export function Experience({ experience }: ExperienceProps) {
           {experience.map((job) => {
             const isExpanded = expandedIds.has(job.id);
             const respCount = job.responsibilities?.length || 0;
+            const isAlyami = job.id === 'job-1' || job.company.toLowerCase().includes('alyami');
 
             return (
               <div key={job.id} className="relative group">
@@ -188,8 +189,49 @@ export function Experience({ experience }: ExperienceProps) {
                         : 'grid-rows-[0fr] opacity-0'
                     }`}
                   >
-                    <div className="overflow-hidden">
-                      <div className="p-5 sm:p-6 pt-5">
+                    <div className="overflow-hidden relative">
+                      
+                      {/* Official Ahmed Yahya Alyami Branding Watermark (Test: Only for Ahmed Alyami card when expanded) */}
+                      {isAlyami && (
+                        <div 
+                          className={`absolute right-2 sm:right-6 bottom-2 sm:bottom-4 pointer-events-none select-none z-0 transition-all duration-700 ease-out flex items-end justify-end ${
+                            isExpanded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-3'
+                          }`}
+                          aria-hidden="true"
+                        >
+                          <div className="relative max-w-[200px] sm:max-w-[320px] md:max-w-[420px] lg:max-w-[480px]">
+                            {/* Official Company Logo from https://www.ayalyami.com/ */}
+                            <img
+                              src="/images/alyami-logo.png"
+                              alt="Ahmed Yahya Alyami"
+                              onError={(e) => {
+                                const target = e.currentTarget;
+                                if (!target.src.includes('ayalyami.com')) {
+                                  target.src = 'https://www.ayalyami.com/images/alyamilogo.png';
+                                }
+                              }}
+                              className="w-full h-auto object-contain opacity-[0.09] dark:opacity-[0.11] pointer-events-none select-none transition-opacity"
+                              loading="lazy"
+                            />
+                            {/* Subtle Navy/Teal tint overlay matching current website theme */}
+                            <div 
+                              className="absolute inset-0 bg-gradient-to-l from-[#0F766E] to-[#0F2747] mix-blend-color opacity-30 dark:opacity-40 pointer-events-none"
+                              style={{
+                                maskImage: 'url(/images/alyami-logo.png)',
+                                WebkitMaskImage: 'url(/images/alyami-logo.png)',
+                                maskSize: 'contain',
+                                WebkitMaskSize: 'contain',
+                                maskRepeat: 'no-repeat',
+                                WebkitMaskRepeat: 'no-repeat',
+                                maskPosition: 'right bottom',
+                                WebkitMaskPosition: 'right bottom',
+                              }}
+                            />
+                          </div>
+                        </div>
+                      )}
+
+                      <div className="relative z-10 p-5 sm:p-6 pt-5">
                         <div className="flex items-center justify-between mb-3.5">
                           <h4 className="text-xs font-bold uppercase tracking-wider text-[#64748B] dark:text-slate-400 flex items-center gap-2">
                             <span>Key Responsibilities & Deliverables</span>
@@ -203,7 +245,7 @@ export function Experience({ experience }: ExperienceProps) {
                           {job.responsibilities.map((resp, idx) => (
                             <li 
                               key={idx} 
-                              className="flex items-start gap-2.5 text-xs sm:text-sm text-[#1F2937] dark:text-slate-300 bg-[#F4F6F8] dark:bg-slate-800/30 p-2.5 rounded-xl border border-slate-200/60 dark:border-slate-800/60"
+                              className="flex items-start gap-2.5 text-xs sm:text-sm text-[#1F2937] dark:text-slate-300 bg-[#F4F6F8]/90 dark:bg-slate-800/40 p-2.5 rounded-xl border border-slate-200/60 dark:border-slate-800/60 backdrop-blur-xs"
                             >
                               <CheckCircle2 className="w-4 h-4 text-[#0F766E] dark:text-teal-400 shrink-0 mt-0.5" />
                               <span className="leading-relaxed">{resp}</span>
