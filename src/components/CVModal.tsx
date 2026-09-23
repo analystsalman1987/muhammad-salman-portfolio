@@ -26,27 +26,40 @@ export function CVModal({ isOpen, onClose, data }: CVModalProps) {
   };
 
   const handleCopyText = () => {
-    const { profile, experience, skills, software, education, languages } = data;
+    const profile = data?.profile || {
+      fullName: 'Muhammad Salman',
+      professionalTitle: 'Accountant | MBA Accounting & Finance',
+      location: 'Dammam, Saudi Arabia',
+      email: 'analystsalman1987@gmail.com',
+      primaryPhone: '+966 55 348 3495',
+      altPhone: '+966 55 343 9539',
+      summary: '',
+    };
+    const experience = data?.experience || [];
+    const skills = data?.skills || [];
+    const software = data?.software || [];
+    const education = data?.education || [];
+    const languages = data?.languages || [];
     
-    let text = `${profile.fullName.toUpperCase()}\n`;
-    text += `${profile.professionalTitle}\n`;
-    text += `Location: ${profile.location}\n`;
-    text += `Email: ${profile.email}\n`;
-    text += `Phone: ${profile.primaryPhone} | ${profile.altPhone}\n\n`;
+    let text = `${(profile.fullName || 'Muhammad Salman').toUpperCase()}\n`;
+    text += `${profile.professionalTitle || 'Accountant'}\n`;
+    text += `Location: ${profile.location || 'Dammam, Saudi Arabia'}\n`;
+    text += `Email: ${profile.email || ''}\n`;
+    text += `Phone: ${profile.primaryPhone || ''} | ${profile.altPhone || ''}\n\n`;
 
-    text += `--- PROFESSIONAL SUMMARY ---\n${profile.summary}\n\n`;
+    text += `--- PROFESSIONAL SUMMARY ---\n${profile.summary || ''}\n\n`;
 
     text += `--- WORK EXPERIENCE ---\n`;
     experience.forEach((job) => {
       text += `\n${job.role} - ${job.company} (${job.period}) - ${job.location}\n`;
-      job.responsibilities.forEach((r) => {
+      (job.responsibilities || []).forEach((r) => {
         text += `• ${r}\n`;
       });
     });
 
     text += `\n--- SKILLS & COMPETENCIES ---\n`;
     skills.forEach((c) => {
-      text += `${c.categoryName}: ${c.skills.join(', ')}\n`;
+      text += `${c.categoryName}: ${(c.skills || []).join(', ')}\n`;
     });
 
     text += `\n--- ERP & SOFTWARE ---\n`;

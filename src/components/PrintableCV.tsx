@@ -3,11 +3,6 @@ import {
   Mail, 
   Phone, 
   MapPin, 
-  Briefcase, 
-  GraduationCap, 
-  CheckCircle, 
-  Layers, 
-  Globe 
 } from 'lucide-react';
 import { AppData } from '../types';
 
@@ -16,7 +11,20 @@ interface PrintableCVProps {
 }
 
 export const PrintableCV: React.FC<PrintableCVProps> = ({ data }) => {
-  const { profile, experience, skills, software, education, languages } = data;
+  const profile = data?.profile || {
+    fullName: 'Muhammad Salman',
+    professionalTitle: 'Accountant | MBA Accounting & Finance',
+    location: 'Dammam, Saudi Arabia',
+    email: 'analystsalman1987@gmail.com',
+    primaryPhone: '+966 55 348 3495',
+    altPhone: '+966 55 343 9539',
+    summary: '',
+  };
+  const experience = data?.experience || [];
+  const skills = data?.skills || [];
+  const software = data?.software || [];
+  const education = data?.education || [];
+  const languages = data?.languages || [];
 
   return (
     <div className="bg-white text-slate-900 p-8 sm:p-12 max-w-4xl mx-auto shadow-lg print:shadow-none print:p-0 print:max-w-none text-left font-sans">
@@ -77,7 +85,7 @@ export const PrintableCV: React.FC<PrintableCVProps> = ({ data }) => {
                 </span>
               </div>
               <ul className="mt-1.5 list-disc list-inside space-y-1 text-slate-700">
-                {job.responsibilities.map((resp, i) => (
+                {(job.responsibilities || []).map((resp, i) => (
                   <li key={i} className="leading-normal">
                     {resp}
                   </li>
@@ -97,7 +105,7 @@ export const PrintableCV: React.FC<PrintableCVProps> = ({ data }) => {
           {skills.map((cat) => (
             <div key={cat.id}>
               <span className="font-bold text-slate-900">{cat.categoryName}: </span>
-              <span className="text-slate-700">{cat.skills.join(', ')}</span>
+              <span className="text-slate-700">{(cat.skills || []).join(', ')}</span>
             </div>
           ))}
         </div>

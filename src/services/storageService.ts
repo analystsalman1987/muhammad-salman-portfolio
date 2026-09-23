@@ -8,10 +8,41 @@ const ADMIN_SESSION_KEY = 'ms_admin_authenticated';
 type StorageListener = (data: AppData) => void;
 const listeners: Set<StorageListener> = new Set();
 
+// Memory store fallback if localStorage is disabled, restricted, or throws SecurityError
+const memoryStore = new Map<string, string>();
+
+const safeStorage = {
+  getItem(key: string): string | null {
+    try {
+      if (typeof window !== 'undefined' && window.localStorage) {
+        const val = window.localStorage.getItem(key);
+        if (val !== null) return val;
+      }
+    } catch {}
+    return memoryStore.get(key) || null;
+  },
+  setItem(key: string, value: string): void {
+    try {
+      if (typeof window !== 'undefined' && window.localStorage) {
+        window.localStorage.setItem(key, value);
+      }
+    } catch {}
+    memoryStore.set(key, value);
+  },
+  removeItem(key: string): void {
+    try {
+      if (typeof window !== 'undefined' && window.localStorage) {
+        window.localStorage.removeItem(key);
+      }
+    } catch {}
+    memoryStore.delete(key);
+  },
+};
+
 export const storageService = {
   getAppData(): AppData {
     try {
-      const stored = localStorage.getItem(STORAGE_KEY);
+      const stored = safeStorage.getItem(STORAGE_KEY);
       if (!stored) {
         this.saveAppData(DEFAULT_APP_DATA);
         return DEFAULT_APP_DATA;
@@ -32,7 +63,7 @@ export const storageService = {
         },
       };
     } catch (e) {
-      console.error('Failed to load profile data from localStorage', e);
+      console.warn('Failed to load profile data from storage, using defaults:', e);
       return DEFAULT_APP_DATA;
     }
   },
@@ -43,11 +74,14 @@ export const storageService = {
         ...data,
         lastUpdated: new Date().toISOString(),
       };
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(toSave));
-      listeners.forEach((listener) => listener(toSave));
+      safeStorage.setItem(STORAGE_KEY, JSON.stringify(toSave));
+      listeners.forEach((listener) => {
+        try {
+          listener(toSave);
+        } catch {}
+      });
     } catch (e) {
-      console.error('Failed to save profile data to localStorage', e);
-      throw e;
+      console.warn('Failed to save profile data to storage:', e);
     }
   },
 
@@ -82,7 +116,7 @@ export const storageService = {
   // Contact Messages management
   getMessages(): ContactMessage[] {
     try {
-      const stored = localStorage.getItem(MESSAGES_KEY);
+      const stored = safeStorage.getItem(MESSAGES_KEY);
       return stored ? JSON.parse(stored) : [];
     } catch {
       return [];
@@ -98,34 +132,34 @@ export const storageService = {
       read: false,
     };
     messages.unshift(newMsg);
-    localStorage.setItem(MESSAGES_KEY, JSON.stringify(messages));
+    safeStorage.setItem(MESSAGES_KEY, JSON.stringify(messages));
     return newMsg;
   },
 
   deleteMessage(id: string): void {
     const messages = this.getMessages().filter((m) => m.id !== id);
-    localStorage.setItem(MESSAGES_KEY, JSON.stringify(messages));
+    safeStorage.setItem(MESSAGES_KEY, JSON.stringify(messages));
   },
 
   clearAllMessages(): void {
-    localStorage.removeItem(MESSAGES_KEY);
+    safeStorage.removeItem(MESSAGES_KEY);
   },
 
   // Admin Session management
   isAdminLoggedIn(): boolean {
-    return localStorage.getItem(ADMIN_SESSION_KEY) === 'true';
+    return safeStorage.getItem(ADMIN_SESSION_KEY) === 'true';
   },
 
   loginAdmin(pin: string, correctPin: string = 'admin123'): boolean {
     if (pin.trim() === correctPin.trim() || pin.trim() === 'admin123') {
-      localStorage.setItem(ADMIN_SESSION_KEY, 'true');
+      safeStorage.setItem(ADMIN_SESSION_KEY, 'true');
       return true;
     }
     return false;
   },
 
   logoutAdmin(): void {
-    localStorage.removeItem(ADMIN_SESSION_KEY);
+    safeStorage.removeItem(ADMIN_SESSION_KEY);
   },
 
   // Helper to compress an uploaded image via Canvas to fit safely inside localStorage
