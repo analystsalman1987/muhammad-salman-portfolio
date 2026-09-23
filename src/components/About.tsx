@@ -56,18 +56,18 @@ export function About({ profile }: AboutProps) {
           {/* Header & Bio Summary */}
           <div className="lg:col-span-6 space-y-6">
             <div>
-              <span className="text-xs font-bold tracking-widest text-emerald-600 dark:text-emerald-400 uppercase">
+              <span className="text-xs font-bold tracking-widest text-[#0F766E] dark:text-teal-400 uppercase">
                 Profile Overview
               </span>
-              <h2 className="mt-1 text-3xl font-extrabold text-slate-900 dark:text-white sm:text-4xl tracking-tight">
+              <h2 className="mt-1 text-3xl font-extrabold text-[#0F2747] dark:text-white sm:text-4xl tracking-tight">
                 About Muhammad Salman
               </h2>
             </div>
 
             {/* Expandable Professional Summary Card */}
-            <div className="p-6 rounded-2xl bg-slate-50 dark:bg-slate-800/40 border border-slate-200 dark:border-slate-800 transition-all shadow-xs">
+            <div className="p-6 rounded-2xl bg-[#F4F6F8] dark:bg-slate-800/40 border border-slate-200 dark:border-slate-800 transition-all shadow-xs">
               <div className="space-y-3">
-                <p className="text-base text-slate-700 dark:text-slate-300 leading-relaxed font-medium">
+                <p className="text-base text-[#1F2937] dark:text-slate-300 leading-relaxed font-medium">
                   {isSummaryExpanded ? fullSummary : previewSummary}
                 </p>
 
@@ -77,7 +77,7 @@ export function About({ profile }: AboutProps) {
                     type="button"
                     onClick={() => setIsSummaryExpanded(!isSummaryExpanded)}
                     aria-expanded={isSummaryExpanded}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/60 hover:bg-emerald-100 dark:hover:bg-emerald-900/60 border border-emerald-200 dark:border-emerald-800 transition-colors cursor-pointer select-none"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-[#0F766E] dark:text-teal-300 bg-[#E6F4F1] dark:bg-teal-950/60 hover:bg-[#d5eee8] dark:hover:bg-teal-900/60 border border-[#0F766E]/30 dark:border-teal-800 transition-colors cursor-pointer select-none"
                   >
                     <span>{isSummaryExpanded ? 'Show Less' : 'Read More'}</span>
                     <ChevronDown 
@@ -89,14 +89,14 @@ export function About({ profile }: AboutProps) {
                 </div>
               </div>
               
-              <div className="pt-4 mt-4 border-t border-slate-200/80 dark:border-slate-700/60 flex items-center gap-2 text-xs font-semibold text-slate-500 dark:text-slate-400">
-                <span className="inline-block w-2 h-2 rounded-full bg-emerald-500" />
+              <div className="pt-4 mt-4 border-t border-slate-200/80 dark:border-slate-700/60 flex items-center gap-2 text-xs font-semibold text-[#64748B] dark:text-slate-400">
+                <span className="inline-block w-2 h-2 rounded-full bg-[#0F766E]" />
                 <span>Operating with full compliance in Dammam, Kingdom of Saudi Arabia</span>
               </div>
             </div>
 
             <div className="space-y-3">
-              <h4 className="text-xs font-bold tracking-wider text-slate-400 dark:text-slate-500 uppercase">
+              <h4 className="text-xs font-bold tracking-wider text-[#64748B] dark:text-slate-400 uppercase">
                 Core Professional Focus
               </h4>
               <ul className="space-y-2.5">
@@ -106,8 +106,8 @@ export function About({ profile }: AboutProps) {
                   'Direct audit assistance and internal control strengthening',
                   'ERP implementation workflows & transactional integrity',
                 ].map((item, i) => (
-                  <li key={i} className="flex items-start gap-2.5 text-sm text-slate-600 dark:text-slate-300">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
+                  <li key={i} className="flex items-start gap-2.5 text-sm text-[#1F2937] dark:text-slate-300">
+                    <CheckCircle2 className="w-4 h-4 text-[#0F766E] dark:text-teal-400 shrink-0 mt-0.5" />
                     <span>{item}</span>
                   </li>
                 ))}
@@ -122,16 +122,16 @@ export function About({ profile }: AboutProps) {
               return (
                 <div
                   key={idx}
-                  className="p-5 rounded-xl bg-slate-50/70 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-800 hover:border-emerald-500/40 dark:hover:border-emerald-500/40 transition-all flex flex-col justify-between"
+                  className="p-5 rounded-xl bg-white dark:bg-slate-800/50 border border-slate-200 dark:border-slate-800 hover:border-[#0F766E]/40 dark:hover:border-teal-500/40 shadow-xs transition-all flex flex-col justify-between"
                 >
-                  <div className="w-10 h-10 rounded-lg bg-emerald-100/70 dark:bg-emerald-950/70 text-emerald-700 dark:text-emerald-300 flex items-center justify-center mb-3">
+                  <div className="w-10 h-10 rounded-lg bg-[#E6F4F1] dark:bg-teal-950/70 text-[#0F766E] dark:text-teal-300 flex items-center justify-center mb-3">
                     <Icon className="w-5 h-5" />
                   </div>
                   <div>
-                    <h3 className="text-sm font-bold text-slate-900 dark:text-slate-100">
+                    <h3 className="text-sm font-bold text-[#0F2747] dark:text-slate-100">
                       {comp.title}
                     </h3>
-                    <p className="text-xs text-slate-500 dark:text-slate-400 mt-1.5 leading-relaxed">
+                    <p className="text-xs text-[#64748B] dark:text-slate-400 mt-1.5 leading-relaxed">
                       {comp.desc}
                     </p>
                   </div>

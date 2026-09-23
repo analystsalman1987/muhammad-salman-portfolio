@@ -103,10 +103,10 @@ export function CVModal({ isOpen, onClose, data }: CVModalProps) {
               <ArrowLeft className="w-5 h-5" />
             </button>
             <div>
-              <h3 className="text-sm font-bold text-slate-900 dark:text-white">
+              <h3 className="text-sm font-bold text-[#0F2747] dark:text-white">
                 Muhammad Salman — Professional CV
               </h3>
-              <p className="text-[11px] text-slate-500">
+              <p className="text-[11px] text-[#64748B] dark:text-slate-400">
                 Ready to Print, Save as PDF, or Copy
               </p>
             </div>
@@ -116,16 +116,16 @@ export function CVModal({ isOpen, onClose, data }: CVModalProps) {
             {/* Copy button */}
             <button
               onClick={handleCopyText}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 transition-colors"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg bg-[#F4F6F8] dark:bg-slate-800 hover:bg-[#E6F4F1] dark:hover:bg-slate-700 text-[#1F2937] dark:text-slate-300 transition-colors cursor-pointer"
             >
-              {copied ? <Check className="w-3.5 h-3.5 text-emerald-500" /> : <Copy className="w-3.5 h-3.5" />}
+              {copied ? <Check className="w-3.5 h-3.5 text-[#0F766E]" /> : <Copy className="w-3.5 h-3.5" />}
               <span>{copied ? 'Copied!' : 'Copy Text'}</span>
             </button>
 
             {/* Print / Save to PDF button */}
             <button
               onClick={handlePrint}
-              className="inline-flex items-center gap-1.5 px-4 py-1.5 text-xs font-bold rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white shadow-xs transition-colors"
+              className="inline-flex items-center gap-1.5 px-4 py-1.5 text-xs font-bold rounded-lg bg-[#0F766E] hover:bg-[#0c625c] text-white shadow-xs transition-colors cursor-pointer"
             >
               <Printer className="w-3.5 h-3.5" />
               <span>Print / Save as PDF</span>

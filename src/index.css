@@ -1,9 +1,25 @@
 @import "tailwindcss";
 
+@theme {
+  --color-navy: #0F2747;
+  --color-navy-dark: #0a1b32;
+  --color-navy-light: #16365f;
+
+  --color-teal-primary: #0F766E;
+  --color-teal-hover: #0c625c;
+  --color-teal-light: #E6F4F1;
+
+  --color-light-gray: #F4F6F8;
+  --color-dark-text: #1F2937;
+  --color-muted-text: #64748B;
+}
+
 @layer base {
   html {
     scroll-behavior: smooth;
     font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    color: #1F2937;
+    background-color: #F4F6F8;
   }
 }
 

@@ -60,19 +60,19 @@ export function Expertise({ expertise }: ExpertiseProps) {
   };
 
   return (
-    <section id="expertise" className="py-20 bg-slate-50 dark:bg-slate-950/60 border-b border-slate-200 dark:border-slate-800 transition-colors">
+    <section id="expertise" className="py-20 bg-[#F4F6F8] dark:bg-slate-950/60 border-b border-slate-200 dark:border-slate-800 transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
           <div>
-            <span className="text-xs font-bold tracking-widest text-emerald-600 dark:text-emerald-400 uppercase">
+            <span className="text-xs font-bold tracking-widest text-[#0F766E] dark:text-teal-400 uppercase">
               Financial Capabilities
             </span>
-            <h2 className="mt-1 text-3xl font-extrabold text-slate-900 dark:text-white sm:text-4xl tracking-tight">
+            <h2 className="mt-1 text-3xl font-extrabold text-[#0F2747] dark:text-white sm:text-4xl tracking-tight">
               Accounting & Finance Expertise
             </h2>
-            <p className="mt-2 text-sm text-slate-600 dark:text-slate-400 max-w-xl">
+            <p className="mt-2 text-sm text-[#64748B] dark:text-slate-400 max-w-xl">
               {expertise.length} core operational capabilities honed across 14+ years of hands-on accounting, finance, and ERP operations in Saudi Arabia and Pakistan.
             </p>
           </div>
@@ -82,9 +82,9 @@ export function Expertise({ expertise }: ExpertiseProps) {
             <button
               type="button"
               onClick={toggleAll}
-              className="inline-flex items-center justify-center gap-1.5 px-3 py-2 text-xs font-semibold rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer select-none"
+              className="inline-flex items-center justify-center gap-1.5 px-3 py-2 text-xs font-semibold rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-[#1F2937] dark:text-slate-300 hover:bg-[#E6F4F1]/60 hover:text-[#0F766E] dark:hover:bg-slate-800 transition-colors cursor-pointer select-none"
             >
-              <Layers className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+              <Layers className="w-3.5 h-3.5 text-[#0F766E] dark:text-teal-400" />
               <span>{allExpanded ? 'Collapse All' : 'Expand All'}</span>
             </button>
 
@@ -96,7 +96,7 @@ export function Expertise({ expertise }: ExpertiseProps) {
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 placeholder="Filter competencies..."
-                className="w-full pl-10 pr-4 py-2 text-xs rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-hidden focus:ring-2 focus:ring-emerald-500"
+                className="w-full pl-10 pr-4 py-2 text-xs rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-[#1F2937] dark:text-slate-100 placeholder-slate-400 focus:outline-hidden focus:ring-2 focus:ring-[#0F766E]"
               />
               {searchTerm && (
                 <button
@@ -118,8 +118,8 @@ export function Expertise({ expertise }: ExpertiseProps) {
               onClick={() => setActiveCategory(cat.id)}
               className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
                 activeCategory === cat.id
-                  ? 'bg-emerald-600 text-white shadow-xs'
-                  : 'bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-800'
+                  ? 'bg-[#0F766E] text-white shadow-xs'
+                  : 'bg-white dark:bg-slate-900 text-[#64748B] dark:text-slate-300 hover:bg-[#E6F4F1]/60 hover:text-[#0F766E] dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-800'
               }`}
             >
               {cat.label}
@@ -142,7 +142,7 @@ export function Expertise({ expertise }: ExpertiseProps) {
                   key={item.id}
                   className={`group rounded-xl border transition-all duration-200 flex flex-col justify-between overflow-hidden shadow-xs ${
                     isExpanded
-                      ? 'bg-white dark:bg-slate-900 border-emerald-500/50 dark:border-emerald-500/50 ring-1 ring-emerald-500/20'
+                      ? 'bg-white dark:bg-slate-900 border-[#0F766E]/50 dark:border-teal-500/50 ring-1 ring-[#0F766E]/20'
                       : 'bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700 hover:shadow-sm'
                   }`}
                 >
@@ -158,24 +158,24 @@ export function Expertise({ expertise }: ExpertiseProps) {
                       }
                     }}
                     aria-expanded={isExpanded}
-                    className="p-5 cursor-pointer select-none focus:outline-hidden focus-visible:ring-2 focus-visible:ring-emerald-500"
+                    className="p-5 cursor-pointer select-none focus:outline-hidden focus-visible:ring-2 focus-visible:ring-[#0F766E]"
                   >
                     <div className="flex items-center justify-between mb-3">
-                      <span className="w-8 h-8 rounded-lg bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shrink-0">
+                      <span className="w-8 h-8 rounded-lg bg-[#E6F4F1] dark:bg-teal-950/60 text-[#0F766E] dark:text-teal-400 flex items-center justify-center shrink-0">
                         <CheckCircle className="w-4 h-4" />
                       </span>
-                      <span className="text-[10px] font-semibold uppercase tracking-wider text-slate-400 dark:text-slate-500 bg-slate-100 dark:bg-slate-800/80 px-2 py-0.5 rounded-md">
+                      <span className="text-[10px] font-semibold uppercase tracking-wider text-[#64748B] dark:text-slate-400 bg-[#F4F6F8] dark:bg-slate-800/80 px-2 py-0.5 rounded-md">
                         {item.category}
                       </span>
                     </div>
 
                     <div className="flex items-start justify-between gap-2">
-                      <h3 className="text-sm font-bold text-slate-900 dark:text-slate-100 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
+                      <h3 className="text-sm font-bold text-[#0F2747] dark:text-slate-100 group-hover:text-[#0F766E] dark:group-hover:text-teal-400 transition-colors">
                         {item.title}
                       </h3>
                       <span
                         className={`inline-flex items-center justify-center w-6 h-6 rounded-md text-slate-400 transition-transform duration-300 shrink-0 ${
-                          isExpanded ? 'rotate-180 text-emerald-600 dark:text-emerald-400' : 'group-hover:text-slate-600'
+                          isExpanded ? 'rotate-180 text-[#0F766E] dark:text-teal-400' : 'group-hover:text-slate-600'
                         }`}
                       >
                         <ChevronDown className="w-4 h-4" />
@@ -188,12 +188,12 @@ export function Expertise({ expertise }: ExpertiseProps) {
                     <div
                       className={`grid transition-all duration-300 ease-in-out ${
                         isExpanded
-                          ? 'grid-rows-[1fr] opacity-100 border-t border-slate-100 dark:border-slate-800 bg-slate-50/60 dark:bg-slate-800/30'
+                          ? 'grid-rows-[1fr] opacity-100 border-t border-slate-100 dark:border-slate-800 bg-[#F4F6F8] dark:bg-slate-800/30'
                           : 'grid-rows-[0fr] opacity-0'
                       }`}
                     >
                       <div className="overflow-hidden">
-                        <div className="p-4 pt-3.5 text-xs text-slate-600 dark:text-slate-300 leading-relaxed font-normal">
+                        <div className="p-4 pt-3.5 text-xs text-[#1F2937] dark:text-slate-300 leading-relaxed font-normal">
                           {item.description}
                         </div>
                       </div>
@@ -201,14 +201,14 @@ export function Expertise({ expertise }: ExpertiseProps) {
                   )}
 
                   {/* Interactive Footer Button Indicator */}
-                  <div className="px-5 py-2.5 bg-slate-50/50 dark:bg-slate-800/20 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
+                  <div className="px-5 py-2.5 bg-[#F4F6F8]/60 dark:bg-slate-800/20 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
                     <button
                       type="button"
                       onClick={(e) => {
                         e.stopPropagation();
                         toggleExpand(item.id);
                       }}
-                      className="text-[11px] font-semibold text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 flex items-center gap-1 cursor-pointer select-none"
+                      className="text-[11px] font-semibold text-[#0F766E] dark:text-teal-400 hover:text-[#0c625c] dark:hover:text-teal-300 flex items-center gap-1 cursor-pointer select-none"
                     >
                       <span>{isExpanded ? 'Hide Details' : 'View Details'}</span>
                       <ChevronDown

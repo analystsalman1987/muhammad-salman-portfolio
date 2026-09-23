@@ -165,25 +165,25 @@ export function AdminDashboard({
       <div className={innerCard}>
         
         {/* Admin Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/90">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-200 dark:border-slate-800 bg-[#F4F6F8] dark:bg-slate-900/90">
           <div className="flex items-center gap-3">
             <button
               onClick={onClose}
-              className="p-1.5 rounded-lg text-slate-500 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200/60 dark:hover:bg-slate-800 transition-colors"
+              className="p-1.5 rounded-lg text-slate-500 hover:text-[#0F2747] dark:hover:text-white hover:bg-slate-200/60 dark:hover:bg-slate-800 transition-colors cursor-pointer"
               title="Return to Website"
             >
               <ArrowLeft className="w-5 h-5" />
             </button>
             <div>
               <div className="flex items-center gap-2">
-                <h2 className="text-base font-bold text-slate-900 dark:text-white">
+                <h2 className="text-base font-bold text-[#0F2747] dark:text-white">
                   Profile Management Console
                 </h2>
-                <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300">
+                <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-[#E6F4F1] dark:bg-teal-950 text-[#0F766E] dark:text-teal-300">
                   Local Mode
                 </span>
               </div>
-              <p className="text-xs text-slate-500">
+              <p className="text-xs text-[#64748B] dark:text-slate-400">
                 All changes immediately update the public website and persist in LocalStorage.
               </p>
             </div>
@@ -191,7 +191,7 @@ export function AdminDashboard({
 
           <div className="flex items-center gap-2">
             {saveStatus && (
-              <span className="text-xs font-semibold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/60 px-2.5 py-1 rounded-md animate-fade-in flex items-center gap-1">
+              <span className="text-xs font-semibold text-[#0F766E] dark:text-teal-400 bg-[#E6F4F1] dark:bg-teal-950/60 px-2.5 py-1 rounded-md animate-fade-in flex items-center gap-1">
                 <Check className="w-3.5 h-3.5" />
                 <span>{saveStatus}</span>
               </span>
@@ -199,7 +199,7 @@ export function AdminDashboard({
 
             <button
               onClick={handleSaveAll}
-              className="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-bold rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white shadow-xs transition-colors"
+              className="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-bold rounded-lg bg-[#0F766E] hover:bg-[#0c625c] text-white shadow-xs transition-colors cursor-pointer"
             >
               <Save className="w-3.5 h-3.5" />
               <span>Save Changes</span>
@@ -207,7 +207,7 @@ export function AdminDashboard({
 
             <button
               onClick={onLogout}
-              className="inline-flex items-center gap-1 px-3 py-2 text-xs font-medium rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors"
+              className="inline-flex items-center gap-1 px-3 py-2 text-xs font-medium rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors cursor-pointer"
               title="Logout from Admin"
             >
               <LogOut className="w-3.5 h-3.5" />
@@ -216,7 +216,7 @@ export function AdminDashboard({
 
             <button
               onClick={onClose}
-              className="p-2 text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-800"
+              className="p-2 text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-800 cursor-pointer"
             >
               <X className="w-5 h-5" />
             </button>
@@ -244,10 +244,10 @@ export function AdminDashboard({
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id as TabType)}
-                className={`flex items-center gap-2 px-4 py-3 text-xs font-semibold whitespace-nowrap border-b-2 transition-all ${
+                className={`flex items-center gap-2 px-4 py-3 text-xs font-semibold whitespace-nowrap border-b-2 transition-all cursor-pointer ${
                   isActive
-                    ? 'border-emerald-600 text-emerald-600 dark:text-emerald-400 bg-emerald-50/40 dark:bg-emerald-950/20'
-                    : 'border-transparent text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
+                    ? 'border-[#0F766E] text-[#0F766E] dark:text-teal-400 bg-[#E6F4F1]/60 dark:bg-teal-950/20'
+                    : 'border-transparent text-[#64748B] dark:text-slate-400 hover:text-[#0F2747] dark:hover:text-slate-200'
                 }`}
               >
                 <Icon className="w-3.5 h-3.5" />
