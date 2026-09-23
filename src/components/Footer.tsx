@@ -36,7 +36,7 @@ export function Footer({ profile, onOpenAdmin, onOpenCV }: FooterProps) {
               </div>
             </div>
             <p className="text-xs text-slate-400 max-w-md leading-relaxed">
-              Experienced accounting professional with 14+ years in general ledger, reconciliation, month-end closing, ERP platforms, and ZATCA VAT compliance across Saudi Arabia.
+              Accounting professional with 14+ years across Saudi Arabia and Pakistan specializing in financial reporting, bookkeeping, reconciliations, month-end closing, ERP systems, and ZATCA VAT compliance.
             </p>
             <div className="flex items-center gap-2 text-xs text-slate-400 pt-1">
               <MapPin className="w-3.5 h-3.5 text-emerald-400" />

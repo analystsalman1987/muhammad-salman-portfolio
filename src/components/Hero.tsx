@@ -61,7 +61,7 @@ export function Hero({ profile, onOpenCV }: HeroProps) {
             {/* Introduction paragraph */}
             <p className="text-base sm:text-lg text-slate-600 dark:text-slate-300 max-w-2xl leading-relaxed mx-auto lg:mx-0">
               {profile.heroIntro ||
-                'Accounting professional with 14+ years of experience in financial reporting, bookkeeping, reconciliation, accounts payable and receivable, month-end closing, ERP systems, ZATCA VAT compliance and financial reporting.'}
+                'Accounting professional with 14+ years of experience across Saudi Arabia and Pakistan, specializing in financial reporting, bookkeeping, accounts payable and receivable, reconciliations, month-end closing, inventory costing, and ERP-based accounting operations. Experienced in VAT and ZATCA compliance, customer and supplier reconciliation, credit control, payment management, and financial documentation. Proficient in Oracle ERP, QuickBooks, SMACC, Delta Financial, and Advanced Microsoft Excel.'}
             </p>
 
             {/* Key Value Badges */}

@@ -48,6 +48,22 @@ export const storageService = {
         return DEFAULT_APP_DATA;
       }
       const parsed: AppData = JSON.parse(stored);
+      // Auto-upgrade if stored version is older than finalized CV version
+      if (!parsed.version || parsed.version < DEFAULT_APP_DATA.version) {
+        const upgraded: AppData = {
+          ...DEFAULT_APP_DATA,
+          profile: {
+            ...DEFAULT_APP_DATA.profile,
+            avatarUrl: parsed.profile?.avatarUrl || DEFAULT_APP_DATA.profile.avatarUrl,
+          },
+          settings: {
+            ...DEFAULT_APP_DATA.settings,
+            ...(parsed.settings || {}),
+          },
+        };
+        this.saveAppData(upgraded);
+        return upgraded;
+      }
       // Merge with default schema to protect against missing keys if schema evolved
       return {
         ...DEFAULT_APP_DATA,

@@ -7,7 +7,8 @@ import {
   CheckCircle, 
   ExternalLink, 
   Info,
-  Clock
+  Clock,
+  ShieldCheck
 } from 'lucide-react';
 import { ProfileInfo } from '../types';
 
@@ -162,6 +163,26 @@ export function Contact({ profile, onSendMessage }: ContactProps) {
                 </span>
               </div>
             </div>
+
+            {/* Driving License Card */}
+            {profile.drivingLicense && (
+              <div className="p-5 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-800 flex items-start gap-4">
+                <div className="w-11 h-11 rounded-xl bg-emerald-50 dark:bg-emerald-950/70 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shrink-0">
+                  <ShieldCheck className="w-5 h-5" />
+                </div>
+                <div>
+                  <span className="text-[11px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider block">
+                    Driving License
+                  </span>
+                  <span className="text-sm font-semibold text-slate-900 dark:text-white">
+                    {profile.drivingLicense}
+                  </span>
+                  <span className="text-xs text-slate-500 dark:text-slate-400 block mt-0.5">
+                    Authorized in Kingdom of Saudi Arabia
+                  </span>
+                </div>
+              </div>
+            )}
 
           </div>
 

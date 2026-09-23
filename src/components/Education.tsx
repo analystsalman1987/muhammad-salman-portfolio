@@ -53,13 +53,9 @@ export function EducationLanguages({ education, languages }: EducationLanguagesP
                         </span>
                       </div>
 
-                      {item.institution ? (
+                      {item.institution && (
                         <p className="text-xs font-medium text-slate-600 dark:text-slate-400 mt-1">
                           {item.institution}
-                        </p>
-                      ) : (
-                        <p className="text-[11px] text-slate-400 dark:text-slate-500 italic mt-1">
-                          Banking & Finance Faculty
                         </p>
                       )}
 

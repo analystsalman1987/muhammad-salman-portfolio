@@ -7,6 +7,7 @@ export interface ProfileInfo {
   email: string;
   primaryPhone: string;
   altPhone: string;
+  drivingLicense?: string;
   avatarUrl?: string; // base64 or empty
   summary: string;
   heroIntro: string;

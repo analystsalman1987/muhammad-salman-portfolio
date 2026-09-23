@@ -229,7 +229,7 @@ export function AdminDashboard({
             { id: 'profile', label: 'Personal & Bio', icon: User },
             { id: 'photo', label: 'Profile Photo', icon: Camera },
             { id: 'experience', label: 'Work Experience', icon: Briefcase },
-            { id: 'expertise', label: 'Expertise (17)', icon: Layers },
+            { id: 'expertise', label: `Expertise (${localData.expertise.length})`, icon: Layers },
             { id: 'skills', label: 'Skills', icon: Award },
             { id: 'software', label: 'ERP & Software', icon: FileSpreadsheet },
             { id: 'education', label: 'Education', icon: GraduationCap },
@@ -360,6 +360,24 @@ export function AdminDashboard({
                       setLocalData({
                         ...localData,
                         profile: { ...localData.profile, altPhone: e.target.value },
+                      })
+                    }
+                    className="w-full px-3 py-2 text-xs rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
+                    Driving License
+                  </label>
+                  <input
+                    type="text"
+                    value={localData.profile.drivingLicense || ''}
+                    placeholder="e.g. Valid Saudi Driving License"
+                    onChange={(e) =>
+                      setLocalData({
+                        ...localData,
+                        profile: { ...localData.profile, drivingLicense: e.target.value },
                       })
                     }
                     className="w-full px-3 py-2 text-xs rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white"

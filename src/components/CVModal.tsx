@@ -45,7 +45,11 @@ export function CVModal({ isOpen, onClose, data }: CVModalProps) {
     text += `${profile.professionalTitle || 'Accountant'}\n`;
     text += `Location: ${profile.location || 'Dammam, Saudi Arabia'}\n`;
     text += `Email: ${profile.email || ''}\n`;
-    text += `Phone: ${profile.primaryPhone || ''} | ${profile.altPhone || ''}\n\n`;
+    text += `Phone: ${profile.primaryPhone || ''} | ${profile.altPhone || ''}\n`;
+    if (profile.drivingLicense) {
+      text += `Driving License: ${profile.drivingLicense}\n`;
+    }
+    text += `\n`;
 
     text += `--- PROFESSIONAL SUMMARY ---\n${profile.summary || ''}\n\n`;
 

@@ -56,7 +56,7 @@ export function About({ profile }: AboutProps) {
             <div className="p-6 rounded-2xl bg-slate-50 dark:bg-slate-800/40 border border-slate-200 dark:border-slate-800 space-y-4">
               <p className="text-base text-slate-700 dark:text-slate-300 leading-relaxed font-medium">
                 {profile.summary ||
-                  'Accounting professional with 14+ years of experience in financial reporting, bookkeeping, reconciliation, accounts payable and receivable, month-end closing, ERP systems, ZATCA VAT compliance, financial reporting and audit support. Experienced in managing customer and supplier accounts, inventory costing, bank and cash management, payment follow-up and coordination between sales, procurement and warehouse teams.'}
+                  'Accounting professional with 14+ years of experience across Saudi Arabia and Pakistan, specializing in financial reporting, bookkeeping, accounts payable and receivable, reconciliations, month-end closing, inventory costing, and ERP-based accounting operations. Experienced in VAT and ZATCA compliance, customer and supplier reconciliation, credit control, payment management, and financial documentation. Proficient in Oracle ERP, QuickBooks, SMACC, Delta Financial, and Advanced Microsoft Excel.'}
               </p>
               
               <div className="pt-2 flex items-center gap-2 text-xs font-semibold text-slate-500 dark:text-slate-400">

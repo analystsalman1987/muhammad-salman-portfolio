@@ -52,7 +52,7 @@ export function Expertise({ expertise }: ExpertiseProps) {
               Accounting & Finance Expertise
             </h2>
             <p className="mt-2 text-sm text-slate-600 dark:text-slate-400 max-w-xl">
-              17 specialized operational areas honed across 14+ years of hands-on corporate, trading, hospitality, and distribution environments in Saudi Arabia.
+              {expertise.length} core operational capabilities honed across 14+ years of hands-on accounting, finance, and ERP operations in Saudi Arabia and Pakistan.
             </p>
           </div>
 

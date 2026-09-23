@@ -54,6 +54,11 @@ export const PrintableCV: React.FC<PrintableCVProps> = ({ data }) => {
               <Phone className="w-3.5 h-3.5 text-slate-700" />
               <span>{profile.primaryPhone} | {profile.altPhone}</span>
             </div>
+            {profile.drivingLicense && (
+              <div className="text-[11px] text-emerald-800 font-medium sm:text-right pt-0.5">
+                <span>{profile.drivingLicense}</span>
+              </div>
+            )}
           </div>
         </div>
       </div>
