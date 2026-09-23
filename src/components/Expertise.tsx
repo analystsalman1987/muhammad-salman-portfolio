@@ -1,13 +1,10 @@
 import { useState, useMemo } from 'react';
 import { 
   Calculator, 
-  FileSpreadsheet, 
   Search, 
   CheckCircle, 
-  ShieldCheck, 
-  RefreshCw,
-  Wallet,
-  Building
+  ChevronDown,
+  Layers
 } from 'lucide-react';
 import { ExpertiseItem } from '../types';
 
@@ -18,6 +15,8 @@ interface ExpertiseProps {
 export function Expertise({ expertise }: ExpertiseProps) {
   const [activeCategory, setActiveCategory] = useState<string>('all');
   const [searchTerm, setSearchTerm] = useState<string>('');
+  // All collapsed by default
+  const [expandedIds, setExpandedIds] = useState<Set<string>>(new Set());
 
   const categories = [
     { id: 'all', label: 'All Expertise' },
@@ -38,6 +37,28 @@ export function Expertise({ expertise }: ExpertiseProps) {
     });
   }, [expertise, activeCategory, searchTerm]);
 
+  const toggleExpand = (id: string) => {
+    setExpandedIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) {
+        next.delete(id);
+      } else {
+        next.add(id);
+      }
+      return next;
+    });
+  };
+
+  const allExpanded = filteredItems.length > 0 && filteredItems.every((item) => expandedIds.has(item.id));
+
+  const toggleAll = () => {
+    if (allExpanded) {
+      setExpandedIds(new Set());
+    } else {
+      setExpandedIds(new Set(filteredItems.map((item) => item.id)));
+    }
+  };
+
   return (
     <section id="expertise" className="py-20 bg-slate-50 dark:bg-slate-950/60 border-b border-slate-200 dark:border-slate-800 transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -56,24 +77,36 @@ export function Expertise({ expertise }: ExpertiseProps) {
             </p>
           </div>
 
-          {/* Search box */}
-          <div className="relative w-full md:w-72">
-            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
-            <input
-              type="text"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              placeholder="Filter competencies..."
-              className="w-full pl-10 pr-4 py-2 text-xs rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500"
-            />
-            {searchTerm && (
-              <button
-                onClick={() => setSearchTerm('')}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
-              >
-                Clear
-              </button>
-            )}
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+            {/* Quick toggle all */}
+            <button
+              type="button"
+              onClick={toggleAll}
+              className="inline-flex items-center justify-center gap-1.5 px-3 py-2 text-xs font-semibold rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer select-none"
+            >
+              <Layers className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+              <span>{allExpanded ? 'Collapse All' : 'Expand All'}</span>
+            </button>
+
+            {/* Search box */}
+            <div className="relative w-full sm:w-64">
+              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+              <input
+                type="text"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                placeholder="Filter competencies..."
+                className="w-full pl-10 pr-4 py-2 text-xs rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-hidden focus:ring-2 focus:ring-emerald-500"
+              />
+              {searchTerm && (
+                <button
+                  onClick={() => setSearchTerm('')}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
+                >
+                  Clear
+                </button>
+              )}
+            </div>
           </div>
         </div>
 
@@ -83,7 +116,7 @@ export function Expertise({ expertise }: ExpertiseProps) {
             <button
               key={cat.id}
               onClick={() => setActiveCategory(cat.id)}
-              className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+              className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
                 activeCategory === cat.id
                   ? 'bg-emerald-600 text-white shadow-xs'
                   : 'bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-800'
@@ -94,38 +127,104 @@ export function Expertise({ expertise }: ExpertiseProps) {
           ))}
         </div>
 
-        {/* Grid of 17 Expertise Cards */}
+        {/* Grid of 15 Expertise Cards (Expandable / Collapsible) */}
         {filteredItems.length === 0 ? (
           <div className="p-12 text-center rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-500">
             No matching expertise found for "{searchTerm}".
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-            {filteredItems.map((item) => (
-              <div
-                key={item.id}
-                className="group p-5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800/80 hover:border-emerald-500/50 dark:hover:border-emerald-500/50 shadow-xs hover:shadow-md transition-all flex flex-col justify-between"
-              >
-                <div>
-                  <div className="flex items-center justify-between mb-2.5">
-                    <span className="w-8 h-8 rounded-lg bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
-                      <CheckCircle className="w-4 h-4" />
-                    </span>
-                    <span className="text-[10px] font-semibold uppercase tracking-wider text-slate-400 dark:text-slate-500">
-                      {item.category}
+            {filteredItems.map((item) => {
+              const isExpanded = expandedIds.has(item.id);
+
+              return (
+                <div
+                  key={item.id}
+                  className={`group rounded-xl border transition-all duration-200 flex flex-col justify-between overflow-hidden shadow-xs ${
+                    isExpanded
+                      ? 'bg-white dark:bg-slate-900 border-emerald-500/50 dark:border-emerald-500/50 ring-1 ring-emerald-500/20'
+                      : 'bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700 hover:shadow-sm'
+                  }`}
+                >
+                  {/* Card Header & Title (Clickable) */}
+                  <div
+                    role="button"
+                    tabIndex={0}
+                    onClick={() => toggleExpand(item.id)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        toggleExpand(item.id);
+                      }
+                    }}
+                    aria-expanded={isExpanded}
+                    className="p-5 cursor-pointer select-none focus:outline-hidden focus-visible:ring-2 focus-visible:ring-emerald-500"
+                  >
+                    <div className="flex items-center justify-between mb-3">
+                      <span className="w-8 h-8 rounded-lg bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shrink-0">
+                        <CheckCircle className="w-4 h-4" />
+                      </span>
+                      <span className="text-[10px] font-semibold uppercase tracking-wider text-slate-400 dark:text-slate-500 bg-slate-100 dark:bg-slate-800/80 px-2 py-0.5 rounded-md">
+                        {item.category}
+                      </span>
+                    </div>
+
+                    <div className="flex items-start justify-between gap-2">
+                      <h3 className="text-sm font-bold text-slate-900 dark:text-slate-100 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
+                        {item.title}
+                      </h3>
+                      <span
+                        className={`inline-flex items-center justify-center w-6 h-6 rounded-md text-slate-400 transition-transform duration-300 shrink-0 ${
+                          isExpanded ? 'rotate-180 text-emerald-600 dark:text-emerald-400' : 'group-hover:text-slate-600'
+                        }`}
+                      >
+                        <ChevronDown className="w-4 h-4" />
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Expandable Explanation Area */}
+                  {item.description && (
+                    <div
+                      className={`grid transition-all duration-300 ease-in-out ${
+                        isExpanded
+                          ? 'grid-rows-[1fr] opacity-100 border-t border-slate-100 dark:border-slate-800 bg-slate-50/60 dark:bg-slate-800/30'
+                          : 'grid-rows-[0fr] opacity-0'
+                      }`}
+                    >
+                      <div className="overflow-hidden">
+                        <div className="p-4 pt-3.5 text-xs text-slate-600 dark:text-slate-300 leading-relaxed font-normal">
+                          {item.description}
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Interactive Footer Button Indicator */}
+                  <div className="px-5 py-2.5 bg-slate-50/50 dark:bg-slate-800/20 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        toggleExpand(item.id);
+                      }}
+                      className="text-[11px] font-semibold text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 flex items-center gap-1 cursor-pointer select-none"
+                    >
+                      <span>{isExpanded ? 'Hide Details' : 'View Details'}</span>
+                      <ChevronDown
+                        className={`w-3 h-3 transition-transform duration-300 ${
+                          isExpanded ? 'rotate-180' : ''
+                        }`}
+                      />
+                    </button>
+                    <span className="text-[10px] text-slate-400 dark:text-slate-500 font-medium">
+                      Operational
                     </span>
                   </div>
-                  <h3 className="text-sm font-bold text-slate-900 dark:text-slate-100 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
-                    {item.title}
-                  </h3>
-                  {item.description && (
-                    <p className="text-xs text-slate-500 dark:text-slate-400 mt-1.5 leading-relaxed">
-                      {item.description}
-                    </p>
-                  )}
+
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         )}
 

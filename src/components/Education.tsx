@@ -1,4 +1,5 @@
-import { GraduationCap, Calendar, BookOpen, Globe } from 'lucide-react';
+import { useState } from 'react';
+import { GraduationCap, Calendar, BookOpen, Globe, ChevronDown } from 'lucide-react';
 import { EducationItem, LanguageItem } from '../types';
 
 interface EducationLanguagesProps {
@@ -7,13 +8,28 @@ interface EducationLanguagesProps {
 }
 
 export function EducationLanguages({ education, languages }: EducationLanguagesProps) {
+  // Collapsed by default
+  const [expandedEduIds, setExpandedEduIds] = useState<Set<string>>(new Set());
+
+  const toggleEdu = (id: string) => {
+    setExpandedEduIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) {
+        next.delete(id);
+      } else {
+        next.add(id);
+      }
+      return next;
+    });
+  };
+
   return (
     <section id="education" className="py-20 bg-slate-50 dark:bg-slate-950/60 border-b border-slate-200 dark:border-slate-800 transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
           
-          {/* Education Section (Col-Span-7) */}
+          {/* Education Section (Col-Span-7) - Expandable Degree Cards */}
           <div className="lg:col-span-7 space-y-6">
             <div>
               <span className="text-xs font-bold tracking-widest text-emerald-600 dark:text-emerald-400 uppercase">
@@ -33,44 +49,110 @@ export function EducationLanguages({ education, languages }: EducationLanguagesP
               </div>
             ) : (
               <div className="space-y-4">
-                {education.map((item) => (
-                  <div
-                    key={item.id}
-                    className="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xs hover:border-slate-300 dark:hover:border-slate-700 transition-all flex items-start gap-4"
-                  >
-                    <div className="w-12 h-12 rounded-xl bg-emerald-50 dark:bg-emerald-950/70 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shrink-0">
-                      <GraduationCap className="w-6 h-6" />
-                    </div>
+                {education.map((item) => {
+                  const isExpanded = expandedEduIds.has(item.id);
 
-                    <div className="flex-1">
-                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
-                        <h3 className="text-lg font-bold text-slate-900 dark:text-white">
-                          {item.degree} — {item.specialization}
-                        </h3>
-                        <span className="inline-flex items-center gap-1 text-xs font-semibold text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 px-2.5 py-1 rounded-md w-fit">
-                          <Calendar className="w-3 h-3 text-emerald-600 dark:text-emerald-400" />
-                          {item.period}
-                        </span>
+                  return (
+                    <div
+                      key={item.id}
+                      className={`rounded-2xl border transition-all duration-200 shadow-xs overflow-hidden ${
+                        isExpanded
+                          ? 'bg-white dark:bg-slate-900 border-emerald-500/50 dark:border-emerald-500/50 ring-1 ring-emerald-500/20 shadow-sm'
+                          : 'bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700'
+                      }`}
+                    >
+                      {/* Clickable Card Header */}
+                      <div
+                        role="button"
+                        tabIndex={0}
+                        onClick={() => toggleEdu(item.id)}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault();
+                            toggleEdu(item.id);
+                          }
+                        }}
+                        aria-expanded={isExpanded}
+                        className="p-5 sm:p-6 cursor-pointer select-none focus:outline-hidden focus-visible:ring-2 focus-visible:ring-emerald-500"
+                      >
+                        <div className="flex items-start gap-4">
+                          <div className="w-12 h-12 rounded-xl bg-emerald-50 dark:bg-emerald-950/70 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shrink-0">
+                            <GraduationCap className="w-6 h-6" />
+                          </div>
+
+                          <div className="flex-1 min-w-0">
+                            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                              <div>
+                                <h3 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white">
+                                  {item.degree} — {item.specialization}
+                                </h3>
+                                {item.institution && (
+                                  <p className="text-xs font-medium text-slate-600 dark:text-slate-400 mt-0.5">
+                                    {item.institution}
+                                  </p>
+                                )}
+                              </div>
+
+                              <div className="flex items-center gap-3 shrink-0">
+                                <span className="inline-flex items-center gap-1 text-xs font-semibold text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 px-2.5 py-1 rounded-md">
+                                  <Calendar className="w-3 h-3 text-emerald-600 dark:text-emerald-400" />
+                                  {item.period}
+                                </span>
+
+                                <div
+                                  className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-xs font-semibold transition-all ${
+                                    isExpanded
+                                      ? 'bg-emerald-600 text-white'
+                                      : 'bg-emerald-50 text-emerald-700 hover:bg-emerald-100 dark:bg-emerald-950/60 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800'
+                                  }`}
+                                >
+                                  <span>{isExpanded ? 'Hide' : 'Details'}</span>
+                                  <ChevronDown
+                                    className={`w-3.5 h-3.5 transition-transform duration-300 ${
+                                      isExpanded ? 'rotate-180' : ''
+                                    }`}
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
                       </div>
 
-                      {item.institution && (
-                        <p className="text-xs font-medium text-slate-600 dark:text-slate-400 mt-1">
-                          {item.institution}
-                        </p>
-                      )}
-
-                      <div className="mt-3 flex items-center gap-2 text-xs text-slate-600 dark:text-slate-400">
-                        <BookOpen className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
-                        <span>Corporate Finance • Financial Accounting • Banking Regulations</span>
+                      {/* Expandable Details Area */}
+                      <div
+                        className={`grid transition-all duration-300 ease-in-out ${
+                          isExpanded
+                            ? 'grid-rows-[1fr] opacity-100 border-t border-slate-100 dark:border-slate-800 bg-slate-50/60 dark:bg-slate-800/30'
+                            : 'grid-rows-[0fr] opacity-0'
+                        }`}
+                      >
+                        <div className="overflow-hidden">
+                          <div className="p-5 sm:p-6 pt-4 space-y-2.5 text-xs text-slate-600 dark:text-slate-300">
+                            <div className="flex items-center gap-2 font-medium">
+                              <BookOpen className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
+                              <span>Specialization: <strong>{item.specialization}</strong></span>
+                            </div>
+                            <p className="leading-relaxed text-slate-500 dark:text-slate-400">
+                              Comprehensive academic training in corporate finance, financial accounting, banking regulations, credit analysis, and financial management.
+                            </p>
+                            {item.institution && (
+                              <p className="text-slate-500 dark:text-slate-400">
+                                Institution: <span className="font-semibold text-slate-700 dark:text-slate-200">{item.institution}</span>
+                              </p>
+                            )}
+                          </div>
+                        </div>
                       </div>
+
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             )}
           </div>
 
-          {/* Languages Section (Col-Span-5) */}
+          {/* Languages Section (Col-Span-5) - Directly Visible */}
           <div className="lg:col-span-5 space-y-6">
             <div>
               <span className="text-xs font-bold tracking-widest text-emerald-600 dark:text-emerald-400 uppercase">

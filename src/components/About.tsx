@@ -1,10 +1,12 @@
+import { useState } from 'react';
 import { 
   CheckCircle2, 
   Building, 
   Calculator, 
   ShieldCheck, 
   Workflow,
-  Receipt
+  Receipt,
+  ChevronDown
 } from 'lucide-react';
 import { ProfileInfo } from '../types';
 
@@ -13,6 +15,15 @@ interface AboutProps {
 }
 
 export function About({ profile }: AboutProps) {
+  const [isSummaryExpanded, setIsSummaryExpanded] = useState<boolean>(false);
+
+  const fullSummary = profile.summary ||
+    'Accounting professional with 14+ years of experience across Saudi Arabia and Pakistan, specializing in financial reporting, bookkeeping, accounts payable and receivable, reconciliations, month-end closing, inventory costing, and ERP-based accounting operations. Experienced in VAT and ZATCA compliance, customer and supplier reconciliation, credit control, payment management, and financial documentation. Proficient in Oracle ERP, QuickBooks, SMACC, Delta Financial, and Advanced Microsoft Excel.';
+
+  // Short preview for initial collapsed state
+  const previewSummary = 
+    'Accounting professional with 14+ years of experience across Saudi Arabia and Pakistan, specializing in financial reporting, bookkeeping, accounts payable and receivable, reconciliations, and month-end closing...';
+
   const coreCompetencies = [
     {
       title: 'Full Financial Cycle & Reporting',
@@ -53,13 +64,32 @@ export function About({ profile }: AboutProps) {
               </h2>
             </div>
 
-            <div className="p-6 rounded-2xl bg-slate-50 dark:bg-slate-800/40 border border-slate-200 dark:border-slate-800 space-y-4">
-              <p className="text-base text-slate-700 dark:text-slate-300 leading-relaxed font-medium">
-                {profile.summary ||
-                  'Accounting professional with 14+ years of experience across Saudi Arabia and Pakistan, specializing in financial reporting, bookkeeping, accounts payable and receivable, reconciliations, month-end closing, inventory costing, and ERP-based accounting operations. Experienced in VAT and ZATCA compliance, customer and supplier reconciliation, credit control, payment management, and financial documentation. Proficient in Oracle ERP, QuickBooks, SMACC, Delta Financial, and Advanced Microsoft Excel.'}
-              </p>
+            {/* Expandable Professional Summary Card */}
+            <div className="p-6 rounded-2xl bg-slate-50 dark:bg-slate-800/40 border border-slate-200 dark:border-slate-800 transition-all shadow-xs">
+              <div className="space-y-3">
+                <p className="text-base text-slate-700 dark:text-slate-300 leading-relaxed font-medium">
+                  {isSummaryExpanded ? fullSummary : previewSummary}
+                </p>
+
+                {/* Read More / Show Less Toggle Button */}
+                <div className="pt-1">
+                  <button
+                    type="button"
+                    onClick={() => setIsSummaryExpanded(!isSummaryExpanded)}
+                    aria-expanded={isSummaryExpanded}
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/60 hover:bg-emerald-100 dark:hover:bg-emerald-900/60 border border-emerald-200 dark:border-emerald-800 transition-colors cursor-pointer select-none"
+                  >
+                    <span>{isSummaryExpanded ? 'Show Less' : 'Read More'}</span>
+                    <ChevronDown 
+                      className={`w-3.5 h-3.5 transition-transform duration-300 ${
+                        isSummaryExpanded ? 'rotate-180' : ''
+                      }`}
+                    />
+                  </button>
+                </div>
+              </div>
               
-              <div className="pt-2 flex items-center gap-2 text-xs font-semibold text-slate-500 dark:text-slate-400">
+              <div className="pt-4 mt-4 border-t border-slate-200/80 dark:border-slate-700/60 flex items-center gap-2 text-xs font-semibold text-slate-500 dark:text-slate-400">
                 <span className="inline-block w-2 h-2 rounded-full bg-emerald-500" />
                 <span>Operating with full compliance in Dammam, Kingdom of Saudi Arabia</span>
               </div>
