@@ -12,9 +12,11 @@ import alyamiLogo from '../assets/alyami-logo.png';
 
 interface ExperienceProps {
   experience: WorkExperienceItem[];
+  isSelected?: boolean;
+  onToggleSelect?: () => void;
 }
 
-export function Experience({ experience }: ExperienceProps) {
+export function Experience({ experience, isSelected = false, onToggleSelect }: ExperienceProps) {
   // All cards collapsed by default
   const [expandedIds, setExpandedIds] = useState<Set<string>>(new Set());
 
@@ -51,8 +53,27 @@ export function Experience({ experience }: ExperienceProps) {
   };
 
   return (
-    <section id="experience" className="py-20 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 transition-colors">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section 
+      id="experience" 
+      className="relative py-20 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 transition-colors overflow-hidden"
+    >
+      {/* Subtle Professional Background Image for Experience (Test Effect) */}
+      <div 
+        className={`absolute inset-0 pointer-events-none transition-opacity duration-700 ease-in-out z-0 ${
+          isSelected ? 'opacity-100' : 'opacity-0'
+        }`}
+        aria-hidden="true"
+      >
+        <img 
+          src="/images/experience_background.jpg" 
+          alt="" 
+          className="w-full h-full object-cover object-center opacity-[0.08] dark:opacity-[0.06] filter contrast-105 select-none"
+          loading="lazy"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-white/80 via-transparent to-white/80 dark:from-slate-900/80 dark:via-transparent dark:to-slate-900/80" />
+      </div>
+
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-12">
@@ -68,15 +89,33 @@ export function Experience({ experience }: ExperienceProps) {
             </p>
           </div>
 
-          {/* Quick toggle all button */}
-          <button
-            type="button"
-            onClick={toggleAll}
-            className="self-start sm:self-auto inline-flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-semibold text-[#1F2937] dark:text-slate-300 bg-[#F4F6F8] hover:bg-[#E6F4F1] dark:bg-slate-800 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 transition-colors cursor-pointer"
-          >
-            <Briefcase className="w-3.5 h-3.5 text-[#0F766E] dark:text-teal-400" />
-            <span>{allExpanded ? 'Collapse All' : 'Expand All'}</span>
-          </button>
+          {/* Controls: toggle background test effect & expand/collapse all */}
+          <div className="self-start sm:self-auto flex items-center gap-2 flex-wrap">
+            {onToggleSelect && (
+              <button
+                type="button"
+                onClick={onToggleSelect}
+                className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all border cursor-pointer ${
+                  isSelected
+                    ? 'bg-[#E6F4F1] text-[#0F766E] border-[#0F766E]/40 dark:bg-teal-950/70 dark:text-teal-300 dark:border-teal-700/60 shadow-2xs'
+                    : 'bg-[#F4F6F8] text-slate-600 border-slate-200 dark:bg-slate-800 dark:text-slate-400 dark:border-slate-700 hover:text-slate-900 dark:hover:text-white'
+                }`}
+                title="Toggle subtle background image effect (Test)"
+              >
+                <span className={`w-1.5 h-1.5 rounded-full transition-colors ${isSelected ? 'bg-[#0F766E] dark:bg-teal-400 animate-pulse' : 'bg-slate-400'}`} />
+                <span>{isSelected ? 'Background: Active' : 'Background: Inactive'}</span>
+              </button>
+            )}
+
+            <button
+              type="button"
+              onClick={toggleAll}
+              className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-semibold text-[#1F2937] dark:text-slate-300 bg-[#F4F6F8] hover:bg-[#E6F4F1] dark:bg-slate-800 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 transition-colors cursor-pointer"
+            >
+              <Briefcase className="w-3.5 h-3.5 text-[#0F766E] dark:text-teal-400" />
+              <span>{allExpanded ? 'Collapse All' : 'Expand All'}</span>
+            </button>
+          </div>
         </div>
 
         {/* Timeline Container */}

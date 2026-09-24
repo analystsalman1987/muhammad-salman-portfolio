@@ -18,6 +18,8 @@ interface NavbarProps {
   onOpenCV: () => void;
   onOpenAdmin: () => void;
   isAdminLoggedIn?: boolean;
+  isExperienceSelected?: boolean;
+  onSelectNav?: (href: string) => void;
 }
 
 export function Navbar({
@@ -26,6 +28,8 @@ export function Navbar({
   onOpenCV,
   onOpenAdmin,
   isAdminLoggedIn = false,
+  isExperienceSelected = false,
+  onSelectNav,
 }: NavbarProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -47,6 +51,7 @@ export function Navbar({
 
   const handleNavClick = (href: string) => {
     setMobileMenuOpen(false);
+    onSelectNav?.(href);
     const element = document.querySelector(href);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
@@ -78,15 +83,24 @@ export function Navbar({
 
           {/* Desktop Navigation Links */}
           <nav className="hidden lg:flex items-center gap-1 xl:gap-2">
-            {navLinks.map((link) => (
-              <button
-                key={link.name}
-                onClick={() => handleNavClick(link.href)}
-                className="px-3 py-2 text-sm font-medium text-[#1F2937] hover:text-[#0F766E] dark:text-slate-300 dark:hover:text-teal-400 rounded-md transition-colors hover:bg-[#E6F4F1]/70 dark:hover:bg-slate-800/60"
-              >
-                {link.name}
-              </button>
-            ))}
+            {navLinks.map((link) => {
+              const isExp = link.href === '#experience';
+              const isHighlighted = isExp && isExperienceSelected;
+
+              return (
+                <button
+                  key={link.name}
+                  onClick={() => handleNavClick(link.href)}
+                  className={`px-3 py-2 text-sm rounded-md transition-all duration-300 cursor-pointer ${
+                    isHighlighted
+                      ? 'font-bold text-[#0F766E] dark:text-teal-300 bg-[#E6F4F1] dark:bg-teal-950/80 border border-[#0F766E]/30 dark:border-teal-800 shadow-2xs scale-102'
+                      : 'font-medium text-[#1F2937] hover:text-[#0F766E] dark:text-slate-300 dark:hover:text-teal-400 hover:bg-[#E6F4F1]/70 dark:hover:bg-slate-800/60'
+                  }`}
+                >
+                  {link.name}
+                </button>
+              );
+            })}
           </nav>
 
           {/* Actions & Theme & CV */}
@@ -159,16 +173,25 @@ export function Navbar({
       {mobileMenuOpen && (
         <div className="lg:hidden border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 px-4 pt-3 pb-6 space-y-2 shadow-xl animate-in slide-in-from-top duration-200">
           <div className="grid grid-cols-1 gap-1">
-            {navLinks.map((link) => (
-              <button
-                key={link.name}
-                onClick={() => handleNavClick(link.href)}
-                className="flex items-center justify-between w-full px-3 py-2.5 text-left text-sm font-medium text-[#1F2937] dark:text-slate-200 hover:bg-[#E6F4F1]/60 dark:hover:bg-slate-800/80 hover:text-[#0F766E] rounded-md"
-              >
-                <span>{link.name}</span>
-                <ChevronRight className="w-4 h-4 text-slate-400" />
-              </button>
-            ))}
+            {navLinks.map((link) => {
+              const isExp = link.href === '#experience';
+              const isHighlighted = isExp && isExperienceSelected;
+
+              return (
+                <button
+                  key={link.name}
+                  onClick={() => handleNavClick(link.href)}
+                  className={`flex items-center justify-between w-full px-3 py-2.5 text-left text-sm rounded-md transition-all duration-300 cursor-pointer ${
+                    isHighlighted
+                      ? 'font-bold text-[#0F766E] dark:text-teal-300 bg-[#E6F4F1] dark:bg-teal-950/80 border border-[#0F766E]/30 dark:border-teal-800'
+                      : 'font-medium text-[#1F2937] dark:text-slate-200 hover:bg-[#E6F4F1]/60 dark:hover:bg-slate-800/80 hover:text-[#0F766E]'
+                  }`}
+                >
+                  <span>{link.name}</span>
+                  <ChevronRight className={`w-4 h-4 ${isHighlighted ? 'text-[#0F766E] dark:text-teal-300' : 'text-slate-400'}`} />
+                </button>
+              );
+            })}
           </div>
 
           <div className="pt-4 border-t border-slate-200 dark:border-slate-800 flex flex-col gap-2.5">

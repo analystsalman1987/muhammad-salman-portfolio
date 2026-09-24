@@ -13,9 +13,10 @@ import { ProfileInfo } from '../types';
 interface HeroProps {
   profile: ProfileInfo;
   onOpenCV: () => void;
+  onSelectExperience?: () => void;
 }
 
-export function Hero({ profile, onOpenCV }: HeroProps) {
+export function Hero({ profile, onOpenCV, onSelectExperience }: HeroProps) {
   const scrollTo = (id: string) => {
     const el = document.getElementById(id);
     if (el) {
@@ -83,8 +84,11 @@ export function Hero({ profile, onOpenCV }: HeroProps) {
             {/* Call to action buttons */}
             <div className="pt-4 flex flex-wrap gap-3.5 justify-center lg:justify-start">
               <button
-                onClick={() => scrollTo('experience')}
-                className="inline-flex items-center gap-2 px-6 py-3.5 rounded-lg bg-[#0F766E] hover:bg-[#0c625c] active:bg-[#0a4f4a] text-white font-semibold text-sm transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5"
+                onClick={() => {
+                  onSelectExperience?.();
+                  scrollTo('experience');
+                }}
+                className="inline-flex items-center gap-2 px-6 py-3.5 rounded-lg bg-[#0F766E] hover:bg-[#0c625c] active:bg-[#0a4f4a] text-white font-semibold text-sm transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5 cursor-pointer"
               >
                 <Briefcase className="w-4 h-4" />
                 <span>View My Experience</span>

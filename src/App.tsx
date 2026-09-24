@@ -53,6 +53,19 @@ export default function App() {
     return checkIsAdminRoute() ? 'admin' : 'home';
   });
 
+  // State for Experience main navigation selection & subtle background test effect
+  const [isExperienceSelected, setIsExperienceSelected] = useState<boolean>(() => {
+    return typeof window !== 'undefined' && window.location.hash === '#experience';
+  });
+
+  const handleNavSelect = (href: string) => {
+    if (href === '#experience') {
+      setIsExperienceSelected(true);
+    } else {
+      setIsExperienceSelected(false);
+    }
+  };
+
   // Listen to popstate and hashchange events for browser back/forward and direct navigation
   useEffect(() => {
     const handleLocationChange = () => {
@@ -61,15 +74,39 @@ export default function App() {
       } else {
         setCurrentRoute('home');
       }
+      if (window.location.hash === '#experience') {
+        setIsExperienceSelected(true);
+      }
     };
 
     window.addEventListener('popstate', handleLocationChange);
     window.addEventListener('hashchange', handleLocationChange);
+
+    // Observe Experience section for scroll-based detection
+    const expEl = document.getElementById('experience');
+    let observer: IntersectionObserver | null = null;
+    if (expEl && 'IntersectionObserver' in window) {
+      observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting && entry.intersectionRatio >= 0.25) {
+              setIsExperienceSelected(true);
+            }
+          });
+        },
+        { threshold: [0.25] }
+      );
+      observer.observe(expEl);
+    }
+
     return () => {
       window.removeEventListener('popstate', handleLocationChange);
       window.removeEventListener('hashchange', handleLocationChange);
+      if (observer && expEl) {
+        observer.unobserve(expEl);
+      }
     };
-  }, []);
+  }, [currentRoute]);
 
   const navigateToAdmin = () => {
     setCurrentRoute('admin');
@@ -154,6 +191,8 @@ export default function App() {
         onOpenCV={() => setIsCVOpen(true)}
         onOpenAdmin={navigateToAdmin}
         isAdminLoggedIn={isAdminLoggedIn}
+        isExperienceSelected={isExperienceSelected}
+        onSelectNav={handleNavSelect}
       />
 
       {/* Main Content Area */}
@@ -163,6 +202,7 @@ export default function App() {
           <Hero 
             profile={profile} 
             onOpenCV={() => setIsCVOpen(true)} 
+            onSelectExperience={() => setIsExperienceSelected(true)}
           />
         )}
 
@@ -183,7 +223,11 @@ export default function App() {
 
         {/* Work Experience Timeline */}
         {visibility.experience && (
-          <Experience experience={experience} />
+          <Experience 
+            experience={experience} 
+            isSelected={isExperienceSelected}
+            onToggleSelect={() => setIsExperienceSelected(!isExperienceSelected)}
+          />
         )}
 
         {/* Categorized Skills */}
