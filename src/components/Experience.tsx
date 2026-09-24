@@ -8,6 +8,7 @@ import {
   Briefcase 
 } from 'lucide-react';
 import { WorkExperienceItem } from '../types';
+import alyamiLogo from '../assets/alyami-logo.png';
 
 interface ExperienceProps {
   experience: WorkExperienceItem[];
@@ -84,6 +85,9 @@ export function Experience({ experience }: ExperienceProps) {
             const isExpanded = expandedIds.has(job.id);
             const respCount = job.responsibilities?.length || 0;
             const isAlyami = job.id === 'job-1' || job.company.toLowerCase().includes('alyami');
+            const isHonda = job.company.toLowerCase().includes('honda');
+            const isAlRaya = job.id === 'job-4' || job.company.toLowerCase().includes('raya');
+            const isPalestine = job.id === 'job-3' || job.company.toLowerCase().includes('palestine');
 
             return (
               <div key={job.id} className="relative group">
@@ -143,6 +147,52 @@ export function Experience({ experience }: ExperienceProps) {
                             <Building2 className="w-3.5 h-3.5 shrink-0" />
                             {job.company}
                           </span>
+
+                          {/* Official Company Logo Badges (Neat presentation inside card) */}
+                          {isAlyami && (
+                            <span className="inline-flex items-center px-2 py-0.5 rounded-md bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-2xs">
+                              <img
+                                src={alyamiLogo}
+                                alt="Ahmed Yahya Alyami"
+                                referrerPolicy="no-referrer"
+                                className="h-4 w-auto object-contain"
+                              />
+                            </span>
+                          )}
+
+                          {isPalestine && (
+                            <span className="inline-flex items-center px-1.5 py-0.5 rounded-md bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-2xs">
+                              <img
+                                src="/images/palestine-hotel-logo.png"
+                                alt="Palestine Hotel Makkah"
+                                referrerPolicy="no-referrer"
+                                className="h-4 w-auto object-contain"
+                              />
+                            </span>
+                          )}
+
+                          {isAlRaya && (
+                            <span className="inline-flex items-center px-1.5 py-0.5 rounded-md bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-2xs">
+                              <img
+                                src="/images/alraya-logo.svg"
+                                alt="Al Raya Specialties"
+                                referrerPolicy="no-referrer"
+                                className="h-4 w-auto object-contain"
+                              />
+                            </span>
+                          )}
+
+                          {isHonda && (
+                            <span className="inline-flex items-center px-1.5 py-0.5 rounded-md bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-2xs">
+                              <img
+                                src="/images/honda-logo.svg"
+                                alt="Honda Canal Bank"
+                                referrerPolicy="no-referrer"
+                                className="h-3.5 w-auto object-contain text-slate-800 dark:text-slate-200"
+                              />
+                            </span>
+                          )}
+
                           <span className="text-slate-300 dark:text-slate-600">•</span>
                           <span className="flex items-center gap-1.5 text-[#64748B] dark:text-slate-400">
                             <MapPin className="w-3.5 h-3.5 shrink-0" />
@@ -191,41 +241,81 @@ export function Experience({ experience }: ExperienceProps) {
                   >
                     <div className="overflow-hidden relative">
                       
-                      {/* Official Ahmed Yahya Alyami Branding Watermark (Test: Only for Ahmed Alyami card when expanded) */}
+                      {/* Official Ahmed Yahya Alyami Watermark (Large subtle watermark on right side with exact 18% opacity) */}
                       {isAlyami && (
                         <div 
-                          className={`absolute right-2 sm:right-6 bottom-2 sm:bottom-4 pointer-events-none select-none z-0 transition-all duration-700 ease-out flex items-end justify-end ${
-                            isExpanded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-3'
+                          className={`absolute right-2 sm:right-6 md:right-8 bottom-3 sm:bottom-6 pointer-events-none select-none z-0 transition-all duration-500 ease-out flex items-end justify-end ${
+                            isExpanded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'
                           }`}
                           aria-hidden="true"
                         >
-                          <div className="relative max-w-[200px] sm:max-w-[320px] md:max-w-[420px] lg:max-w-[480px]">
-                            {/* Official Company Logo from https://www.ayalyami.com/ */}
+                          <div className="relative w-44 sm:w-72 md:w-96 lg:w-[440px] max-w-[50vw]">
                             <img
-                              src="/images/alyami-logo.png"
+                              src={alyamiLogo}
                               alt="Ahmed Yahya Alyami"
-                              onError={(e) => {
-                                const target = e.currentTarget;
-                                if (!target.src.includes('ayalyami.com')) {
-                                  target.src = 'https://www.ayalyami.com/images/alyamilogo.png';
-                                }
-                              }}
-                              className="w-full h-auto object-contain opacity-[0.09] dark:opacity-[0.11] pointer-events-none select-none transition-opacity"
+                              referrerPolicy="no-referrer"
+                              className="w-full h-auto object-contain opacity-[0.18] pointer-events-none select-none drop-shadow-xs"
                               loading="lazy"
                             />
-                            {/* Subtle Navy/Teal tint overlay matching current website theme */}
-                            <div 
-                              className="absolute inset-0 bg-gradient-to-l from-[#0F766E] to-[#0F2747] mix-blend-color opacity-30 dark:opacity-40 pointer-events-none"
-                              style={{
-                                maskImage: 'url(/images/alyami-logo.png)',
-                                WebkitMaskImage: 'url(/images/alyami-logo.png)',
-                                maskSize: 'contain',
-                                WebkitMaskSize: 'contain',
-                                maskRepeat: 'no-repeat',
-                                WebkitMaskRepeat: 'no-repeat',
-                                maskPosition: 'right bottom',
-                                WebkitMaskPosition: 'right bottom',
-                              }}
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Official Palestine Hotel Makkah Watermark (Expanded treatment for Palestine Hotel Makkah) */}
+                      {isPalestine && (
+                        <div 
+                          className={`absolute right-3 sm:right-7 bottom-3 sm:bottom-6 pointer-events-none select-none z-0 transition-all duration-500 ease-out flex items-end justify-end ${
+                            isExpanded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'
+                          }`}
+                          aria-hidden="true"
+                        >
+                          <div className="relative w-28 sm:w-44 md:w-56 max-w-[35vw]">
+                            <img
+                              src="/images/palestine-hotel-logo.png"
+                              alt="Palestine Hotel Makkah"
+                              referrerPolicy="no-referrer"
+                              className="w-full h-auto object-contain opacity-[0.16] pointer-events-none select-none drop-shadow-xs"
+                              loading="lazy"
+                            />
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Official Al Raya Specialties Watermark (Expanded treatment for Al Raya Specialties) */}
+                      {isAlRaya && (
+                        <div 
+                          className={`absolute right-3 sm:right-7 bottom-3 sm:bottom-6 pointer-events-none select-none z-0 transition-all duration-500 ease-out flex items-end justify-end ${
+                            isExpanded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'
+                          }`}
+                          aria-hidden="true"
+                        >
+                          <div className="relative w-28 sm:w-44 md:w-56 max-w-[35vw]">
+                            <img
+                              src="/images/alraya-logo.svg"
+                              alt="Al Raya Specialties"
+                              referrerPolicy="no-referrer"
+                              className="w-full h-auto object-contain opacity-[0.14] pointer-events-none select-none drop-shadow-xs"
+                              loading="lazy"
+                            />
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Official Honda Logo Watermark (Expanded treatment for Honda Canal Bank) */}
+                      {isHonda && (
+                        <div 
+                          className={`absolute right-4 sm:right-8 bottom-3 sm:bottom-6 pointer-events-none select-none z-0 transition-all duration-500 ease-out flex items-end justify-end ${
+                            isExpanded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'
+                          }`}
+                          aria-hidden="true"
+                        >
+                          <div className="relative w-28 sm:w-44 md:w-52 max-w-[32vw]">
+                            <img
+                              src="/images/honda-logo.svg"
+                              alt="Honda Canal Bank"
+                              referrerPolicy="no-referrer"
+                              className="w-full h-auto object-contain opacity-[0.14] pointer-events-none select-none drop-shadow-xs"
+                              loading="lazy"
                             />
                           </div>
                         </div>

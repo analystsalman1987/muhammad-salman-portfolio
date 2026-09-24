@@ -113,6 +113,27 @@ export function About({ profile }: AboutProps) {
                 ))}
               </ul>
             </div>
+
+            {/* Professional Accounting Workplace Visual */}
+            <div className="relative rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800 shadow-xs group">
+              <img
+                src="/images/accounting_workplace.jpg"
+                alt="Corporate Accounting and Financial Governance Workplace"
+                referrerPolicy="no-referrer"
+                className="w-full h-44 sm:h-52 object-cover object-center group-hover:scale-102 transition-transform duration-500"
+                loading="lazy"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#0F2747]/90 via-[#0F2747]/25 to-transparent flex items-end p-4">
+                <div className="text-white">
+                  <span className="text-[10px] uppercase font-bold tracking-wider text-teal-300 bg-[#0F2747]/80 px-2 py-0.5 rounded backdrop-blur-xs">
+                    Executive Accounting & Governance
+                  </span>
+                  <p className="text-xs font-semibold text-slate-100 mt-1">
+                    Financial Reporting, Reconciliation & ZATCA Statutory Compliance
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
 
           {/* Pillars & Competency Cards (Right) */}

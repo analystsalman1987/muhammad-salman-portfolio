@@ -4,7 +4,14 @@ import {
   ShieldCheck, 
   Cpu, 
   Check, 
-  LucideIcon 
+  LucideIcon,
+  BookOpen,
+  BarChart3,
+  ArrowLeftRight,
+  Landmark,
+  Database,
+  Table,
+  ClipboardCheck
 } from 'lucide-react';
 import { SkillCategory } from '../types';
 
@@ -18,6 +25,17 @@ const categoryIcons: Record<string, LucideIcon> = {
   'Tax & Compliance': ShieldCheck,
   Software: Cpu,
 };
+
+const coreVisualSkills = [
+  { label: 'Accounting & Bookkeeping', icon: BookOpen, desc: 'GL & Ledger Accuracy' },
+  { label: 'Financial Reporting', icon: BarChart3, desc: 'Balance Sheets & P&L' },
+  { label: 'Accounts Payable & Receivable', icon: ArrowLeftRight, desc: 'AP / AR Aging & Control' },
+  { label: 'Bank & Account Reconciliation', icon: Landmark, desc: 'Cash & Vendor Scrutiny' },
+  { label: 'VAT / ZATCA', icon: ShieldCheck, desc: 'Saudi E-Invoicing & Filing' },
+  { label: 'ERP Systems', icon: Database, desc: 'Oracle, QuickBooks & SMACC' },
+  { label: 'Advanced Excel', icon: Table, desc: 'VLOOKUP, Pivot & Modeling' },
+  { label: 'Audit Support', icon: ClipboardCheck, desc: 'Internal & External Readiness' },
+];
 
 export function Skills({ skills }: SkillsProps) {
   if (!skills || skills.length === 0) {
@@ -35,7 +53,7 @@ export function Skills({ skills }: SkillsProps) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Header */}
-        <div className="max-w-3xl mb-12">
+        <div className="max-w-3xl mb-10">
           <span className="text-xs font-bold tracking-widest text-[#0F766E] dark:text-teal-400 uppercase">
             Domain Competence
           </span>
@@ -45,6 +63,31 @@ export function Skills({ skills }: SkillsProps) {
           <p className="mt-2 text-sm text-[#64748B] dark:text-slate-400">
             Categorized core proficiencies across statutory compliance, financial governance, operational accounting, and reporting tools.
           </p>
+        </div>
+
+        {/* Minimal Core Competency Visual Pills / Grid */}
+        <div className="mb-10 grid grid-cols-2 sm:grid-cols-4 gap-3">
+          {coreVisualSkills.map((item, idx) => {
+            const Icon = item.icon;
+            return (
+              <div
+                key={idx}
+                className="p-3.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 shadow-2xs hover:border-[#0F766E]/50 hover:shadow-xs transition-all flex items-start gap-3"
+              >
+                <div className="w-8 h-8 rounded-lg bg-[#E6F4F1] dark:bg-teal-950/80 text-[#0F766E] dark:text-teal-300 flex items-center justify-center shrink-0 mt-0.5">
+                  <Icon className="w-4 h-4" />
+                </div>
+                <div className="min-w-0">
+                  <h4 className="text-xs font-bold text-[#0F2747] dark:text-white truncate">
+                    {item.label}
+                  </h4>
+                  <p className="text-[11px] text-[#64748B] dark:text-slate-400 truncate">
+                    {item.desc}
+                  </p>
+                </div>
+              </div>
+            );
+          })}
         </div>
 
         {/* Categories Grid */}

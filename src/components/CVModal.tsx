@@ -7,7 +7,7 @@ import {
   FileDown, 
   ArrowLeft 
 } from 'lucide-react';
-import { AppData } from '../types';
+import { AppData, ProfileInfo } from '../types';
 import { PrintableCV } from './PrintableCV';
 
 interface CVModalProps {
@@ -26,13 +26,14 @@ export function CVModal({ isOpen, onClose, data }: CVModalProps) {
   };
 
   const handleCopyText = () => {
-    const profile = data?.profile || {
+    const profile: Partial<ProfileInfo> = data?.profile || {
       fullName: 'Muhammad Salman',
       professionalTitle: 'Accountant | MBA Accounting & Finance',
       location: 'Dammam, Saudi Arabia',
       email: 'analystsalman1987@gmail.com',
       primaryPhone: '+966 55 348 3495',
       altPhone: '+966 55 343 9539',
+      drivingLicense: 'Transferable Iqama | Valid Saudi Driving License',
       summary: '',
     };
     const experience = data?.experience || [];

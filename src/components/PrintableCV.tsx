@@ -4,20 +4,21 @@ import {
   Phone, 
   MapPin, 
 } from 'lucide-react';
-import { AppData } from '../types';
+import { AppData, ProfileInfo } from '../types';
 
 interface PrintableCVProps {
   data: AppData;
 }
 
 export const PrintableCV: React.FC<PrintableCVProps> = ({ data }) => {
-  const profile = data?.profile || {
+  const profile: Partial<ProfileInfo> = data?.profile || {
     fullName: 'Muhammad Salman',
     professionalTitle: 'Accountant | MBA Accounting & Finance',
     location: 'Dammam, Saudi Arabia',
     email: 'analystsalman1987@gmail.com',
     primaryPhone: '+966 55 348 3495',
     altPhone: '+966 55 343 9539',
+    drivingLicense: 'Transferable Iqama | Valid Saudi Driving License',
     summary: '',
   };
   const experience = data?.experience || [];

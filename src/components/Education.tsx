@@ -150,6 +150,27 @@ export function EducationLanguages({ education, languages }: EducationLanguagesP
                 })}
               </div>
             )}
+
+            {/* Subtle Professional Finance / MBA Visual Card */}
+            <div className="relative rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800 shadow-xs group">
+              <img
+                src="/images/mba_finance_academic.jpg"
+                alt="Master of Business Administration in Finance and Accounting Academic Background"
+                referrerPolicy="no-referrer"
+                className="w-full h-36 sm:h-44 object-cover object-center group-hover:scale-102 transition-transform duration-500"
+                loading="lazy"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#0F2747]/90 via-[#0F2747]/30 to-transparent flex items-end p-4">
+                <div className="text-white">
+                  <span className="text-[10px] uppercase font-bold tracking-wider text-teal-300 bg-[#0F2747]/80 px-2 py-0.5 rounded backdrop-blur-xs">
+                    MBA — Banking & Finance Specialization
+                  </span>
+                  <p className="text-xs font-semibold text-slate-100 mt-1">
+                    Post-Graduate Financial Analysis, Capital Budgeting & Management Accounting
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
 
           {/* Languages Section (Col-Span-5) - Directly Visible */}
