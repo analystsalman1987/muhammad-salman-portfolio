@@ -59,6 +59,51 @@ export function Software({ software }: SoftwareProps) {
     return AppWindow;
   };
 
+  const getSoftwareLogo = (name: string) => {
+    const lower = name.toLowerCase();
+    if (lower.includes('oracle')) {
+      return {
+        src: '/images/software/oracle-logo.svg',
+        alt: 'Oracle ERP',
+        className: 'h-4 sm:h-4.5 w-auto object-contain',
+        containerClassName: 'h-11 px-3 min-w-11',
+      };
+    }
+    if (lower.includes('quickbooks')) {
+      return {
+        src: '/images/software/quickbooks-logo.svg',
+        alt: 'Intuit QuickBooks',
+        className: 'h-5 sm:h-5.5 w-auto object-contain',
+        containerClassName: 'h-11 px-3 min-w-11',
+      };
+    }
+    if (lower.includes('excel')) {
+      return {
+        src: '/images/software/excel-logo.svg',
+        alt: 'Microsoft Excel',
+        className: 'h-6 sm:h-7 w-auto object-contain',
+        containerClassName: 'h-11 w-11 px-2',
+      };
+    }
+    if (lower.includes('office')) {
+      return {
+        src: '/images/software/office-logo.svg',
+        alt: 'Microsoft Office',
+        className: 'h-6 sm:h-7 w-auto object-contain',
+        containerClassName: 'h-11 w-11 px-2',
+      };
+    }
+    if (lower.includes('smacc')) {
+      return {
+        src: '/images/software/smacc-logo.png',
+        alt: 'SMACC Cloud Accounting',
+        className: 'h-7 sm:h-7.5 w-auto object-contain',
+        containerClassName: 'h-11 px-2.5 min-w-11',
+      };
+    }
+    return null;
+  };
+
   return (
     <section id="software" className="py-20 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -93,6 +138,7 @@ export function Software({ software }: SoftwareProps) {
           {software.map((item) => {
             const isExpanded = expandedIds.has(item.id);
             const Icon = getSoftwareIcon(item.name);
+            const logoInfo = getSoftwareLogo(item.name);
 
             return (
               <div
@@ -118,8 +164,22 @@ export function Software({ software }: SoftwareProps) {
                   className="p-6 cursor-pointer select-none focus:outline-hidden focus-visible:ring-2 focus-visible:ring-[#0F766E]"
                 >
                   <div className="flex items-start justify-between gap-3 mb-4">
-                    <div className="w-11 h-11 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700/80 text-[#0F766E] dark:text-teal-400 flex items-center justify-center shadow-xs">
-                      <Icon className="w-6 h-6" />
+                    <div 
+                      className={`rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700/80 text-[#0F766E] dark:text-teal-400 flex items-center justify-center shadow-xs transition-colors overflow-hidden ${
+                        logoInfo ? logoInfo.containerClassName : 'w-11 h-11'
+                      }`}
+                    >
+                      {logoInfo ? (
+                        <img
+                          src={logoInfo.src}
+                          alt={logoInfo.alt}
+                          referrerPolicy="no-referrer"
+                          className={logoInfo.className}
+                          loading="lazy"
+                        />
+                      ) : (
+                        <Icon className="w-6 h-6" />
+                      )}
                     </div>
                     {item.badge && (
                       <span className="text-[11px] font-semibold px-2.5 py-1 rounded-full bg-[#E6F4F1] text-[#0F766E] dark:bg-teal-950/70 dark:text-teal-300 border border-[#0F766E]/30 dark:border-teal-800">

@@ -1,5 +1,18 @@
-import { useState } from 'react';
-import { GraduationCap, Calendar, BookOpen, Globe, ChevronDown } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { 
+  GraduationCap, 
+  Calendar, 
+  BookOpen, 
+  Globe, 
+  ChevronDown, 
+  FileText, 
+  ExternalLink, 
+  X, 
+  Award, 
+  Printer, 
+  Download, 
+  CheckCircle2 
+} from 'lucide-react';
 import { EducationItem, LanguageItem } from '../types';
 
 interface EducationLanguagesProps {
@@ -7,11 +20,74 @@ interface EducationLanguagesProps {
   languages: LanguageItem[];
 }
 
+interface DegreeCertificate {
+  title: string;
+  degreeName: string;
+  major: string;
+  institution: string;
+  location: string;
+  date: string;
+  regNo: string;
+  degNo: string;
+  svgUrl: string;
+  htmlUrl: string;
+}
+
+const CERTIFICATES_DATA: Record<string, DegreeCertificate> = {
+  mba: {
+    title: 'Master of Business Administration in Finance',
+    degreeName: 'Master of Business Administration',
+    major: 'Finance',
+    institution: 'Preston Institute of Management, Science and Technology',
+    location: 'Karachi - Pakistan',
+    date: 'November 20, 2012',
+    regNo: '1531209016',
+    degNo: '20111215207',
+    svgUrl: '/certificates/mba-degree-certificate.svg',
+    htmlUrl: '/certificates/mba-degree-certificate.html',
+  },
+  bba: {
+    title: 'Bachelor of Business Administration in Finance',
+    degreeName: 'Bachelor of Business Administration',
+    major: 'Finance',
+    institution: 'Preston Institute of Management, Science and Technology',
+    location: 'Karachi - Pakistan',
+    date: 'August 25, 2012',
+    regNo: '1511205039',
+    degNo: '25081214462',
+    svgUrl: '/certificates/bba-degree-certificate.svg',
+    htmlUrl: '/certificates/bba-degree-certificate.html',
+  },
+};
+
 export function EducationLanguages({ education, languages }: EducationLanguagesProps) {
   // Collapsed by default
   const [expandedEduIds, setExpandedEduIds] = useState<Set<string>>(new Set());
+  const [activeCertificate, setActiveCertificate] = useState<DegreeCertificate | null>(null);
 
-  const toggleEdu = (id: string) => {
+  // Close certificate modal on Escape key
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setActiveCertificate(null);
+      }
+    };
+    if (activeCertificate) {
+      document.body.style.overflow = 'hidden';
+      window.addEventListener('keydown', handleKeyDown);
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [activeCertificate]);
+
+  const toggleEdu = (id: string, e?: React.MouseEvent) => {
+    if (e) {
+      e.stopPropagation();
+    }
     setExpandedEduIds((prev) => {
       const next = new Set(prev);
       if (next.has(id)) {
@@ -23,13 +99,24 @@ export function EducationLanguages({ education, languages }: EducationLanguagesP
     });
   };
 
+  const getCertificateForItem = (item: EducationItem): DegreeCertificate | null => {
+    const deg = item.degree.toLowerCase();
+    if (deg.includes('mba') || item.id === 'edu-1') {
+      return CERTIFICATES_DATA.mba;
+    }
+    if (deg.includes('bba') || item.id === 'edu-2') {
+      return CERTIFICATES_DATA.bba;
+    }
+    return null;
+  };
+
   return (
     <section id="education" className="py-20 bg-[#F4F6F8] dark:bg-slate-950/60 border-b border-slate-200 dark:border-slate-800 transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
           
-          {/* Education Section (Col-Span-7) - Expandable Degree Cards */}
+          {/* Education Section (Col-Span-7) - Expandable Degree Cards with Certificate Access */}
           <div className="lg:col-span-7 space-y-6">
             <div>
               <span className="text-xs font-bold tracking-widest text-[#0F766E] dark:text-teal-400 uppercase">
@@ -51,6 +138,7 @@ export function EducationLanguages({ education, languages }: EducationLanguagesP
               <div className="space-y-4">
                 {education.map((item) => {
                   const isExpanded = expandedEduIds.has(item.id);
+                  const cert = getCertificateForItem(item);
 
                   return (
                     <div
@@ -58,33 +146,43 @@ export function EducationLanguages({ education, languages }: EducationLanguagesP
                       className={`rounded-2xl border transition-all duration-200 shadow-xs overflow-hidden ${
                         isExpanded
                           ? 'bg-white dark:bg-slate-900 border-[#0F766E]/50 dark:border-teal-500/50 ring-1 ring-[#0F766E]/20 shadow-sm'
-                          : 'bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700'
+                          : 'bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 hover:border-[#0F766E]/40 dark:hover:border-teal-600/40'
                       }`}
                     >
-                      {/* Clickable Card Header */}
+                      {/* Clickable Card Header - Clicking opens the attached Degree Certificate */}
                       <div
                         role="button"
                         tabIndex={0}
-                        onClick={() => toggleEdu(item.id)}
-                        onKeyDown={(e) => {
-                          if (e.key === 'Enter' || e.key === ' ') {
-                            e.preventDefault();
+                        onClick={() => {
+                          if (cert) {
+                            setActiveCertificate(cert);
+                          } else {
                             toggleEdu(item.id);
                           }
                         }}
-                        aria-expanded={isExpanded}
-                        className="p-5 sm:p-6 cursor-pointer select-none focus:outline-hidden focus-visible:ring-2 focus-visible:ring-[#0F766E]"
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault();
+                            if (cert) {
+                              setActiveCertificate(cert);
+                            } else {
+                              toggleEdu(item.id);
+                            }
+                          }
+                        }}
+                        aria-label={`View ${item.degree} degree certificate`}
+                        className="p-5 sm:p-6 cursor-pointer select-none focus:outline-hidden focus-visible:ring-2 focus-visible:ring-[#0F766E] group"
                       >
                         <div className="flex items-start gap-4">
-                          <div className="w-12 h-12 rounded-xl bg-[#E6F4F1] dark:bg-teal-950/70 text-[#0F766E] dark:text-teal-400 flex items-center justify-center shrink-0">
+                          <div className="w-12 h-12 rounded-xl bg-[#E6F4F1] dark:bg-teal-950/70 text-[#0F766E] dark:text-teal-400 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
                             <GraduationCap className="w-6 h-6" />
                           </div>
 
                           <div className="flex-1 min-w-0">
                             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                               <div>
-                                <h3 className="text-base sm:text-lg font-bold text-[#0F2747] dark:text-white">
-                                  {item.degree} — {item.specialization}
+                                <h3 className="text-base sm:text-lg font-bold text-[#0F2747] dark:text-white group-hover:text-[#0F766E] dark:group-hover:text-teal-400 transition-colors flex items-center gap-2 flex-wrap">
+                                  <span>{item.degree} — {item.specialization}</span>
                                 </h3>
                                 {item.institution && (
                                   <p className="text-xs font-medium text-[#64748B] dark:text-slate-400 mt-0.5">
@@ -93,18 +191,34 @@ export function EducationLanguages({ education, languages }: EducationLanguagesP
                                 )}
                               </div>
 
-                              <div className="flex items-center gap-3 shrink-0">
+                              <div className="flex items-center gap-2 sm:gap-2.5 shrink-0 flex-wrap">
                                 <span className="inline-flex items-center gap-1 text-xs font-semibold text-[#1F2937] dark:text-slate-300 bg-[#F4F6F8] dark:bg-slate-800 px-2.5 py-1 rounded-md">
                                   <Calendar className="w-3 h-3 text-[#0F766E] dark:text-teal-400" />
                                   {item.period}
                                 </span>
 
-                                <div
-                                  className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-xs font-semibold transition-all ${
+                                {/* Degree Certificate Action Indicator */}
+                                {cert && (
+                                  <span
+                                    className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-semibold bg-[#E6F4F1] text-[#0F766E] dark:bg-teal-950/60 dark:text-teal-300 border border-[#0F766E]/30 dark:border-teal-800 group-hover:bg-[#0F766E] group-hover:text-white dark:group-hover:bg-teal-600 dark:group-hover:text-white transition-all shadow-2xs"
+                                    title="Click to view official degree certificate"
+                                  >
+                                    <FileText className="w-3.5 h-3.5" />
+                                    <span>Certificate</span>
+                                    <ExternalLink className="w-3 h-3 opacity-70" />
+                                  </span>
+                                )}
+
+                                {/* Details expansion toggle */}
+                                <button
+                                  type="button"
+                                  onClick={(e) => toggleEdu(item.id, e)}
+                                  className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-xs font-semibold transition-all cursor-pointer ${
                                     isExpanded
                                       ? 'bg-[#0F766E] text-white'
-                                      : 'bg-[#E6F4F1] text-[#0F766E] hover:bg-[#d5eee8] dark:bg-teal-950/60 dark:text-teal-300 border border-[#0F766E]/30 dark:border-teal-800'
+                                      : 'bg-[#F4F6F8] text-[#475569] hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700'
                                   }`}
+                                  title="Toggle academic overview"
                                 >
                                   <span>{isExpanded ? 'Hide' : 'Details'}</span>
                                   <ChevronDown
@@ -112,7 +226,7 @@ export function EducationLanguages({ education, languages }: EducationLanguagesP
                                       isExpanded ? 'rotate-180' : ''
                                     }`}
                                   />
-                                </div>
+                                </button>
                               </div>
                             </div>
                           </div>
@@ -128,7 +242,7 @@ export function EducationLanguages({ education, languages }: EducationLanguagesP
                         }`}
                       >
                         <div className="overflow-hidden">
-                          <div className="p-5 sm:p-6 pt-4 space-y-2.5 text-xs text-[#1F2937] dark:text-slate-300">
+                          <div className="p-5 sm:p-6 pt-4 space-y-3 text-xs text-[#1F2937] dark:text-slate-300">
                             <div className="flex items-center gap-2 font-medium">
                               <BookOpen className="w-4 h-4 text-[#0F766E] dark:text-teal-400 shrink-0" />
                               <span>Specialization: <strong className="text-[#0F2747] dark:text-white">{item.specialization}</strong></span>
@@ -140,6 +254,29 @@ export function EducationLanguages({ education, languages }: EducationLanguagesP
                               <p className="text-[#64748B] dark:text-slate-400">
                                 Institution: <span className="font-semibold text-[#0F2747] dark:text-slate-200">{item.institution}</span>
                               </p>
+                            )}
+
+                            {/* Direct Certificate Button inside expanded details */}
+                            {cert && (
+                              <div className="pt-2 flex items-center gap-3 flex-wrap">
+                                <button
+                                  type="button"
+                                  onClick={() => setActiveCertificate(cert)}
+                                  className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-[#0F766E] text-white hover:bg-[#0D9488] shadow-xs transition-colors cursor-pointer"
+                                >
+                                  <Award className="w-4 h-4" />
+                                  <span>Open Official Degree Certificate</span>
+                                </button>
+                                <a
+                                  href={cert.htmlUrl}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#0F766E] dark:text-teal-400 hover:underline"
+                                >
+                                  <span>Open in new tab</span>
+                                  <ExternalLink className="w-3 h-3" />
+                                </a>
+                              </div>
                             )}
                           </div>
                         </div>
@@ -230,6 +367,102 @@ export function EducationLanguages({ education, languages }: EducationLanguagesP
         </div>
 
       </div>
+
+      {/* Clean Degree Certificate Viewer Modal */}
+      {activeCertificate && (
+        <div 
+          className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/75 backdrop-blur-sm animate-in fade-in duration-200"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="cert-modal-title"
+          onClick={() => setActiveCertificate(null)}
+        >
+          <div 
+            className="relative w-full max-w-5xl max-h-[92vh] flex flex-col bg-slate-900 border border-slate-700 rounded-2xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Modal Header */}
+            <div className="px-5 py-3.5 bg-slate-900/95 border-b border-slate-800 flex items-center justify-between gap-4 flex-wrap">
+              <div className="flex items-center gap-3">
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-teal-950/80 border border-teal-700/60 text-teal-300 text-[11px] font-bold uppercase tracking-wider">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-teal-400" />
+                  Verified Credential
+                </span>
+                <div>
+                  <h3 id="cert-modal-title" className="text-sm sm:text-base font-bold text-white">
+                    {activeCertificate.title}
+                  </h3>
+                  <p className="text-xs text-slate-400 hidden sm:block">
+                    {activeCertificate.institution} • Reg: {activeCertificate.regNo} • Conferred: {activeCertificate.date}
+                  </p>
+                </div>
+              </div>
+
+              {/* Action Toolbar */}
+              <div className="flex items-center gap-2">
+                <a
+                  href={activeCertificate.htmlUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition-colors"
+                  title="Open certificate viewer in dedicated browser tab"
+                >
+                  <ExternalLink className="w-3.5 h-3.5" />
+                  <span className="hidden sm:inline">New Tab</span>
+                </a>
+                <a
+                  href={activeCertificate.svgUrl}
+                  download={`Muhammad-Salman-${activeCertificate.degreeName.replace(/\s+/g, '-')}-Certificate.svg`}
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition-colors"
+                  title="Download vector certificate"
+                >
+                  <Download className="w-3.5 h-3.5" />
+                  <span className="hidden sm:inline">Download</span>
+                </a>
+                <button
+                  type="button"
+                  onClick={() => window.print()}
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition-colors"
+                  title="Print certificate"
+                >
+                  <Printer className="w-3.5 h-3.5" />
+                  <span className="hidden sm:inline">Print</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setActiveCertificate(null)}
+                  className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors ml-1 cursor-pointer"
+                  aria-label="Close certificate viewer"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+            </div>
+
+            {/* Modal Certificate Viewport */}
+            <div className="flex-1 overflow-auto p-4 sm:p-8 bg-[#0B1727] flex items-center justify-center">
+              <div className="w-full max-w-4xl bg-white rounded-xl shadow-2xl overflow-hidden border border-slate-300">
+                <img
+                  src={activeCertificate.svgUrl}
+                  alt={`${activeCertificate.title} — Muhammad Salman`}
+                  className="w-full h-auto block select-none"
+                  loading="eager"
+                />
+              </div>
+            </div>
+
+            {/* Modal Verification Footer */}
+            <div className="px-5 py-2.5 bg-slate-900 border-t border-slate-800 text-[11px] text-slate-400 flex items-center justify-between flex-wrap gap-2">
+              <span>
+                Preston Institute of Management, Science and Technology • Reg. No: <strong>{activeCertificate.regNo}</strong> • Deg. No: <strong>{activeCertificate.degNo}</strong>
+              </span>
+              <span className="text-teal-400 font-medium">
+                Conferred: {activeCertificate.date}
+              </span>
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 }
