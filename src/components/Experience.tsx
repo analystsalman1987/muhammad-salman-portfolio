@@ -169,27 +169,6 @@ export function Experience({
               job.id === 'job-3' ||
               job.company.toLowerCase().includes('palestine');
 
-            /*
-             * Select the company logo for the expanded JD watermark.
-             * Every company uses the SAME visual treatment below.
-             */
-            let watermarkLogo: string | null = null;
-            let watermarkAlt = '';
-
-            if (isAlyami) {
-              watermarkLogo = alyamiLogo;
-              watermarkAlt = 'Ahmed Yahya Alyami';
-            } else if (isPalestine) {
-              watermarkLogo = '/images/palestine-hotel-logo.png';
-              watermarkAlt = 'Palestine Hotel Makkah';
-            } else if (isAlRaya) {
-              watermarkLogo = '/images/alraya-logo.svg';
-              watermarkAlt = 'Al Raya Specialties';
-            } else if (isHonda) {
-              watermarkLogo = '/images/honda-logo.svg';
-              watermarkAlt = 'Honda Canal Bank';
-            }
-
             return (
               <div key={job.id} className="relative group">
 
@@ -251,13 +230,14 @@ export function Experience({
                         </span>
                       </div>
 
-                      {/* Location + Logo + Date */}
+                      {/* Location + Logo + Date / View Details */}
                       <div className="grid grid-cols-1 sm:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-4 pt-1">
 
-                        {/* Location */}
+                        {/* Location - Left */}
                         <div className="flex items-center min-w-0">
                           <span className="flex items-center gap-1.5 text-xs sm:text-sm text-[#64748B] dark:text-slate-400">
                             <MapPin className="w-3.5 h-3.5 shrink-0" />
+
                             <span className="truncate">
                               {job.location}
                             </span>
@@ -313,12 +293,15 @@ export function Experience({
 
                         </div>
 
-                        {/* Date + View Details */}
+                        {/* Date + View Details - Right */}
                         <div className="flex items-center justify-end gap-3 shrink-0">
 
                           <div className="flex items-center gap-1.5 text-xs font-semibold text-[#1F2937] dark:text-slate-300 bg-white dark:bg-slate-900 px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-800">
                             <Calendar className="w-3.5 h-3.5 text-[#0F766E] dark:text-teal-400 shrink-0" />
-                            <span>{job.period}</span>
+
+                            <span>
+                              {job.period}
+                            </span>
                           </div>
 
                           <div
@@ -359,31 +342,45 @@ export function Experience({
                     <div className="overflow-hidden relative">
 
                       {/* =====================================================
-                          UNIVERSAL COMPANY WATERMARK
-                          Same position + size + opacity + effect for ALL
-                          companies.
+                          AHMED ALYAMI JD WATERMARK ONLY
+
+                          Only Ahmed Alyami keeps the watermark.
+                          Position: upper-right of the expanded JD.
+                          Date: directly below the logo.
+                          Effect: same subtle 18% opacity.
                          ===================================================== */}
-                      {watermarkLogo && (
+                      {isAlyami && (
                         <div
-                          className={`absolute right-2 sm:right-6 md:right-8 bottom-3 sm:bottom-6 pointer-events-none select-none z-0 transition-all duration-500 ease-out ${
+                          className={`absolute top-5 right-5 sm:top-6 sm:right-8 md:top-7 md:right-10 pointer-events-none select-none z-0 transition-all duration-500 ease-out ${
                             isExpanded
                               ? 'opacity-100 translate-y-0'
-                              : 'opacity-0 translate-y-2'
+                              : 'opacity-0 -translate-y-2'
                           }`}
                           aria-hidden="true"
                         >
-                          <div className="relative w-44 sm:w-72 md:w-96 lg:w-[440px] max-w-[50vw]">
-                            <img
-                              src={watermarkLogo}
-                              alt={watermarkAlt}
-                              referrerPolicy="no-referrer"
-                              className="w-full h-auto object-contain opacity-[0.18] pointer-events-none select-none drop-shadow-xs"
-                              loading="lazy"
-                            />
+                          <div className="flex flex-col items-center justify-start">
+
+                            {/* Ahmed Alyami Watermark */}
+                            <div className="relative w-44 sm:w-56 md:w-64 lg:w-72">
+                              <img
+                                src={alyamiLogo}
+                                alt="Ahmed Yahya Alyami"
+                                referrerPolicy="no-referrer"
+                                className="w-full h-auto object-contain opacity-[0.18] pointer-events-none select-none drop-shadow-xs"
+                                loading="lazy"
+                              />
+                            </div>
+
+                            {/* Job Period directly below logo */}
+                            <div className="mt-1.5 text-[10px] sm:text-xs font-semibold text-slate-500/70 dark:text-slate-400/60 whitespace-nowrap">
+                              {job.period}
+                            </div>
+
                           </div>
                         </div>
                       )}
 
+                      {/* Responsibilities Content */}
                       <div className="relative z-10 p-5 sm:p-6 pt-5">
 
                         <div className="flex items-center justify-between mb-3.5">
