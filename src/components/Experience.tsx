@@ -161,34 +161,34 @@ export function Experience({ experience }: ExperienceProps) {
                           )}
 
                           {isPalestine && (
-                            <span className="inline-flex items-center px-1.5 py-0.5 rounded-md bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-2xs">
+                            <span className="inline-flex items-center px-2 py-1 rounded-md bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-2xs">
                               <img
                                 src="/images/palestine-hotel-logo.png"
                                 alt="Palestine Hotel Makkah"
                                 referrerPolicy="no-referrer"
-                                className="h-4 w-auto object-contain"
+                                className="h-7 w-auto object-contain"
                               />
                             </span>
                           )}
 
                           {isAlRaya && (
-                            <span className="inline-flex items-center px-1.5 py-0.5 rounded-md bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-2xs">
+                            <span className="inline-flex items-center px-2 py-1 rounded-md bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-2xs">
                               <img
                                 src="/images/alraya-logo.svg"
                                 alt="Al Raya Specialties"
                                 referrerPolicy="no-referrer"
-                                className="h-4 w-auto object-contain"
+                                className="h-7 w-auto object-contain"
                               />
                             </span>
                           )}
 
                           {isHonda && (
-                            <span className="inline-flex items-center px-1.5 py-0.5 rounded-md bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-2xs">
+                            <span className="inline-flex items-center px-2 py-1 rounded-md bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-2xs">
                               <img
                                 src="/images/honda-logo.svg"
                                 alt="Honda Canal Bank"
                                 referrerPolicy="no-referrer"
-                                className="h-3.5 w-auto object-contain text-slate-800 dark:text-slate-200"
+                                className="h-6 w-auto object-contain text-slate-800 dark:text-slate-200"
                               />
                             </span>
                           )}
@@ -255,66 +255,6 @@ export function Experience({ experience }: ExperienceProps) {
                               alt="Ahmed Yahya Alyami"
                               referrerPolicy="no-referrer"
                               className="w-full h-auto object-contain opacity-[0.18] pointer-events-none select-none drop-shadow-xs"
-                              loading="lazy"
-                            />
-                          </div>
-                        </div>
-                      )}
-
-                      {/* Official Palestine Hotel Makkah Watermark (Expanded treatment for Palestine Hotel Makkah) */}
-                      {isPalestine && (
-                        <div 
-                          className={`absolute right-3 sm:right-7 bottom-3 sm:bottom-6 pointer-events-none select-none z-0 transition-all duration-500 ease-out flex items-end justify-end ${
-                            isExpanded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'
-                          }`}
-                          aria-hidden="true"
-                        >
-                          <div className="relative w-28 sm:w-44 md:w-56 max-w-[35vw]">
-                            <img
-                              src="/images/palestine-hotel-logo.png"
-                              alt="Palestine Hotel Makkah"
-                              referrerPolicy="no-referrer"
-                              className="w-full h-auto object-contain opacity-[0.16] pointer-events-none select-none drop-shadow-xs"
-                              loading="lazy"
-                            />
-                          </div>
-                        </div>
-                      )}
-
-                      {/* Official Al Raya Specialties Watermark (Expanded treatment for Al Raya Specialties) */}
-                      {isAlRaya && (
-                        <div 
-                          className={`absolute right-3 sm:right-7 bottom-3 sm:bottom-6 pointer-events-none select-none z-0 transition-all duration-500 ease-out flex items-end justify-end ${
-                            isExpanded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'
-                          }`}
-                          aria-hidden="true"
-                        >
-                          <div className="relative w-28 sm:w-44 md:w-56 max-w-[35vw]">
-                            <img
-                              src="/images/alraya-logo.svg"
-                              alt="Al Raya Specialties"
-                              referrerPolicy="no-referrer"
-                              className="w-full h-auto object-contain opacity-[0.14] pointer-events-none select-none drop-shadow-xs"
-                              loading="lazy"
-                            />
-                          </div>
-                        </div>
-                      )}
-
-                      {/* Official Honda Logo Watermark (Expanded treatment for Honda Canal Bank) */}
-                      {isHonda && (
-                        <div 
-                          className={`absolute right-4 sm:right-8 bottom-3 sm:bottom-6 pointer-events-none select-none z-0 transition-all duration-500 ease-out flex items-end justify-end ${
-                            isExpanded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'
-                          }`}
-                          aria-hidden="true"
-                        >
-                          <div className="relative w-28 sm:w-44 md:w-52 max-w-[32vw]">
-                            <img
-                              src="/images/honda-logo.svg"
-                              alt="Honda Canal Bank"
-                              referrerPolicy="no-referrer"
-                              className="w-full h-auto object-contain opacity-[0.14] pointer-events-none select-none drop-shadow-xs"
                               loading="lazy"
                             />
                           </div>
