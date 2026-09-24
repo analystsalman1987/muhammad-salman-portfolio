@@ -48,8 +48,25 @@ export function About({ profile }: AboutProps) {
   ];
 
   return (
-    <section id="about" className="py-20 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 transition-colors">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section 
+      id="about" 
+      className="relative py-20 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 transition-colors overflow-hidden"
+    >
+      {/* Subtle Professional Accounting & Finance Background Image */}
+      <div 
+        className="absolute inset-0 pointer-events-none z-0"
+        aria-hidden="true"
+      >
+        <img 
+          src="/images/about_accounting_background.jpg" 
+          alt="" 
+          className="w-full h-full object-cover object-center opacity-[0.18] dark:opacity-[0.14] filter contrast-105 select-none"
+          loading="lazy"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-white/90 via-white/40 to-white/90 dark:from-slate-900/90 dark:via-slate-900/50 dark:to-slate-900/90" />
+      </div>
+
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
           

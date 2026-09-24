@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import { 
   MapPin, 
   Briefcase, 
@@ -17,6 +18,63 @@ interface HeroProps {
 }
 
 export function Hero({ profile, onOpenCV, onSelectExperience }: HeroProps) {
+  const [isHomeActive, setIsHomeActive] = useState(true);
+
+  useEffect(() => {
+    // Detect if Home is selected via hash or scroll
+    const checkHash = () => {
+      const hash = window.location.hash;
+      if (!hash || hash === '#home' || hash === '#') {
+        setIsHomeActive(true);
+      }
+    };
+
+    checkHash();
+    window.addEventListener('hashchange', checkHash);
+    window.addEventListener('popstate', checkHash);
+
+    // Watch intersection for smooth activation when scrolled into view
+    const homeEl = document.getElementById('home');
+    let observer: IntersectionObserver | null = null;
+
+    if (homeEl && 'IntersectionObserver' in window) {
+      observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting && entry.intersectionRatio >= 0.2) {
+              setIsHomeActive(true);
+            }
+          });
+        },
+        { threshold: [0.2] }
+      );
+      observer.observe(homeEl);
+    }
+
+    // Listen to clicks on navigation links pointing to #home
+    const handleHomeClick = (e: MouseEvent) => {
+      const target = (e.target as HTMLElement)?.closest('a, button');
+      if (target) {
+        const href = target.getAttribute('href') || target.getAttribute('data-href');
+        const text = target.textContent?.trim().toLowerCase();
+        if (href === '#home' || text === 'home') {
+          setIsHomeActive(true);
+        }
+      }
+    };
+
+    document.addEventListener('click', handleHomeClick);
+
+    return () => {
+      window.removeEventListener('hashchange', checkHash);
+      window.removeEventListener('popstate', checkHash);
+      document.removeEventListener('click', handleHomeClick);
+      if (observer && homeEl) {
+        observer.unobserve(homeEl);
+      }
+    };
+  }, []);
+
   const scrollTo = (id: string) => {
     const el = document.getElementById(id);
     if (el) {
@@ -26,6 +84,26 @@ export function Hero({ profile, onOpenCV, onSelectExperience }: HeroProps) {
 
   return (
     <section id="home" className="relative pt-12 pb-20 md:pt-20 md:pb-28 overflow-hidden">
+      {/* Subtle Corporate Accounting & Finance Background Image */}
+      <div 
+        className={`absolute inset-0 pointer-events-none -z-10 transition-opacity duration-700 ease-in-out ${
+          isHomeActive ? 'opacity-100' : 'opacity-85'
+        }`}
+        aria-hidden="true"
+      >
+        <img 
+          src="/images/hero_accounting_bg.jpg" 
+          alt="" 
+          className="w-full h-full object-cover object-center opacity-[0.18] dark:opacity-[0.13] filter contrast-105 select-none transition-transform duration-1000 ease-out"
+          style={{
+            transform: isHomeActive ? 'scale(1.008)' : 'scale(1.0)',
+          }}
+          loading="eager"
+        />
+        {/* Soft gradient overlay to preserve optimal contrast and text readability */}
+        <div className="absolute inset-0 bg-gradient-to-b from-white/85 via-white/50 to-white dark:from-slate-900/90 dark:via-slate-900/65 dark:to-slate-900" />
+      </div>
+
       {/* Subtle corporate ambient background grid */}
       <div className="absolute inset-0 -z-10 bg-[linear-gradient(to_right,#e2e8f015_1px,transparent_1px),linear-gradient(to_bottom,#e2e8f015_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,#1e293b15_1px,transparent_1px),linear-gradient(to_bottom,#1e293b15_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]" />
 

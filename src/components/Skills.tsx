@@ -94,12 +94,10 @@ export function Skills({ skills }: SkillsProps) {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {skills.map((cat) => {
             const Icon = categoryIcons[cat.categoryName] || Calculator;
-            const isTaxCompliance = cat.categoryName === 'Tax & Compliance';
 
             return (
               <div
                 key={cat.id}
-                id={isTaxCompliance ? 'tax-compliance' : undefined}
                 className="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xs hover:border-[#0F766E]/40 dark:hover:border-teal-500/40 transition-all flex flex-col justify-between"
               >
                 <div>
@@ -116,19 +114,6 @@ export function Skills({ skills }: SkillsProps) {
                       </span>
                     </div>
                   </div>
-
-                  {/* Professional Tax & Financial Compliance Workplace Image */}
-                  {isTaxCompliance && (
-                    <div className="mb-4 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-800 shadow-2xs group/img">
-                      <img
-                        src="/images/tax_compliance_workplace.jpg"
-                        alt="Tax documentation, VAT calculation worksheets and accounting compliance records"
-                        referrerPolicy="no-referrer"
-                        className="w-full h-36 sm:h-44 object-cover object-center group-hover/img:scale-102 transition-transform duration-500"
-                        loading="lazy"
-                      />
-                    </div>
-                  )}
 
                   <div className="flex flex-wrap gap-2">
                     {cat.skills.map((skill, sIdx) => (
