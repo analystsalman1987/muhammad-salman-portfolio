@@ -165,104 +165,115 @@ export function Experience({ experience, isSelected = false, onToggleSelect }: E
                     aria-expanded={isExpanded}
                     className="p-5 sm:p-6 cursor-pointer select-none focus:outline-hidden focus-visible:ring-2 focus-visible:ring-[#0F766E]"
                   >
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                      
-                      {/* Left: Role, Company, Location */}
-                      <div className="space-y-1.5 flex-1 min-w-0">
-                        <div className="flex items-center gap-2.5 flex-wrap">
-                          <h3 className="text-lg sm:text-xl font-bold text-[#0F2747] dark:text-white group-hover:text-[#0F766E] dark:group-hover:text-teal-400 transition-colors">
-                            {job.role}
-                          </h3>
-                          {job.isCurrent && (
-                            <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-[#E6F4F1] text-[#0F766E] dark:bg-teal-950/80 dark:text-teal-300 border border-[#0F766E]/30 dark:border-teal-800">
-                              <span className="w-1.5 h-1.5 rounded-full bg-[#0F766E] animate-pulse" />
-                              Present Role
-                            </span>
-                          )}
+                    <div className="space-y-3.5">
+
+                      {/* Designation / Job Title */}
+                      <div className="flex items-center gap-2.5 flex-wrap">
+                        <h3 className="text-lg sm:text-xl font-bold text-[#0F2747] dark:text-white group-hover:text-[#0F766E] dark:group-hover:text-teal-400 transition-colors">
+                          {job.role}
+                        </h3>
+
+                        {job.isCurrent && (
+                          <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-[#E6F4F1] text-[#0F766E] dark:bg-teal-950/80 dark:text-teal-300 border border-[#0F766E]/30 dark:border-teal-800">
+                            <span className="w-1.5 h-1.5 rounded-full bg-[#0F766E] animate-pulse" />
+                            Present Role
+                          </span>
+                        )}
+                      </div>
+
+                      {/* Company Name */}
+                      <div className="flex items-center gap-1.5 text-xs sm:text-sm">
+                        <span className="font-semibold text-[#0F766E] dark:text-teal-400 flex items-center gap-1.5">
+                          <Building2 className="w-3.5 h-3.5 shrink-0" />
+                          {job.company}
+                        </span>
+                      </div>
+
+                      {/* Location + Large Logo + Date / View Details */}
+                      <div className="grid grid-cols-1 sm:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-4 pt-1">
+
+                        {/* Location - Left */}
+                        <div className="flex items-center min-w-0">
+                          <span className="flex items-center gap-1.5 text-xs sm:text-sm text-[#64748B] dark:text-slate-400">
+                            <MapPin className="w-3.5 h-3.5 shrink-0" />
+                            <span className="truncate">{job.location}</span>
+                          </span>
                         </div>
 
-                        <div className="flex items-center gap-3 text-xs sm:text-sm text-[#1F2937] dark:text-slate-300 flex-wrap">
-                          <span className="font-semibold text-[#0F766E] dark:text-teal-400 flex items-center gap-1.5">
-                            <Building2 className="w-3.5 h-3.5 shrink-0" />
-                            {job.company}
-                          </span>
+                        {/* Large Official Company Logo - Center */}
+                        <div className="flex items-center justify-center min-h-[64px] sm:min-h-[80px]">
 
-                          {/* Official Company Logo Badges (Neat presentation inside card) */}
                           {isAlyami && (
-                            <span className="inline-flex items-center px-2 py-0.5 rounded-md bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-2xs">
+                            <div className="flex items-center justify-center px-3 py-2 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-2xs">
                               <img
                                 src={alyamiLogo}
                                 alt="Ahmed Yahya Alyami"
                                 referrerPolicy="no-referrer"
-                                className="h-4 w-auto object-contain"
+                                className="h-14 sm:h-16 md:h-20 w-auto max-w-[220px] object-contain"
                               />
-                            </span>
+                            </div>
                           )}
 
                           {isPalestine && (
-                            <span className="inline-flex items-center px-2 py-1 rounded-md bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-2xs">
+                            <div className="flex items-center justify-center px-3 py-2 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-2xs">
                               <img
                                 src="/images/palestine-hotel-logo.png"
                                 alt="Palestine Hotel Makkah"
                                 referrerPolicy="no-referrer"
-                                className="h-7 w-auto object-contain"
+                                className="h-12 sm:h-14 md:h-16 w-auto max-w-[200px] object-contain"
                               />
-                            </span>
+                            </div>
                           )}
 
                           {isAlRaya && (
-                            <span className="inline-flex items-center px-2 py-1 rounded-md bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-2xs">
+                            <div className="flex items-center justify-center px-3 py-2 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-2xs">
                               <img
                                 src="/images/alraya-logo.svg"
                                 alt="Al Raya Specialties"
                                 referrerPolicy="no-referrer"
-                                className="h-7 w-auto object-contain"
+                                className="h-12 sm:h-14 md:h-16 w-auto max-w-[200px] object-contain"
                               />
-                            </span>
+                            </div>
                           )}
 
                           {isHonda && (
-                            <span className="inline-flex items-center px-2 py-1 rounded-md bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-2xs">
+                            <div className="flex items-center justify-center px-3 py-2 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-2xs">
                               <img
                                 src="/images/honda-logo.svg"
                                 alt="Honda Canal Bank"
                                 referrerPolicy="no-referrer"
-                                className="h-6 w-auto object-contain text-slate-800 dark:text-slate-200"
+                                className="h-12 sm:h-14 md:h-16 w-auto max-w-[180px] object-contain"
                               />
-                            </span>
+                            </div>
                           )}
 
-                          <span className="text-slate-300 dark:text-slate-600">•</span>
-                          <span className="flex items-center gap-1.5 text-[#64748B] dark:text-slate-400">
-                            <MapPin className="w-3.5 h-3.5 shrink-0" />
-                            {job.location}
-                          </span>
-                        </div>
-                      </div>
-
-                      {/* Right: Dates + Interactive "View Responsibilities" Trigger */}
-                      <div className="flex items-center justify-between sm:justify-end gap-3 shrink-0 pt-2 sm:pt-0 border-t sm:border-t-0 border-slate-200/60 dark:border-slate-700/40">
-                        
-                        {/* Dates Badge */}
-                        <div className="flex items-center gap-1.5 text-xs font-semibold text-[#1F2937] dark:text-slate-300 bg-white dark:bg-slate-900 px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-800">
-                          <Calendar className="w-3.5 h-3.5 text-[#0F766E] dark:text-teal-400 shrink-0" />
-                          <span>{job.period}</span>
                         </div>
 
-                        {/* Interactive Toggle Button */}
-                        <div 
-                          className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
-                            isExpanded
-                              ? 'bg-[#0F766E] text-white shadow-xs'
-                              : 'bg-[#E6F4F1] text-[#0F766E] hover:bg-[#d5eee8] dark:bg-teal-950/60 dark:text-teal-300 dark:hover:bg-teal-900/60 border border-[#0F766E]/30 dark:border-teal-800'
-                          }`}
-                        >
-                          <span>{isExpanded ? 'Hide Details' : 'View Details'}</span>
-                          <ChevronDown 
-                            className={`w-3.5 h-3.5 transition-transform duration-300 ease-out ${
-                              isExpanded ? 'rotate-180 text-white' : 'text-[#0F766E] dark:text-teal-400'
-                            }`} 
-                          />
+                        {/* Date + View Details - Right */}
+                        <div className="flex items-center justify-end gap-3 shrink-0">
+
+                          {/* Dates Badge */}
+                          <div className="flex items-center gap-1.5 text-xs font-semibold text-[#1F2937] dark:text-slate-300 bg-white dark:bg-slate-900 px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-800">
+                            <Calendar className="w-3.5 h-3.5 text-[#0F766E] dark:text-teal-400 shrink-0" />
+                            <span>{job.period}</span>
+                          </div>
+
+                          {/* Interactive Toggle Button */}
+                          <div 
+                            className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+                              isExpanded
+                                ? 'bg-[#0F766E] text-white shadow-xs'
+                                : 'bg-[#E6F4F1] text-[#0F766E] hover:bg-[#d5eee8] dark:bg-teal-950/60 dark:text-teal-300 dark:hover:bg-teal-900/60 border border-[#0F766E]/30 dark:border-teal-800'
+                            }`}
+                          >
+                            <span>{isExpanded ? 'Hide Details' : 'View Details'}</span>
+                            <ChevronDown 
+                              className={`w-3.5 h-3.5 transition-transform duration-300 ease-out ${
+                                isExpanded ? 'rotate-180 text-white' : 'text-[#0F766E] dark:text-teal-400'
+                              }`} 
+                            />
+                          </div>
+
                         </div>
 
                       </div>
