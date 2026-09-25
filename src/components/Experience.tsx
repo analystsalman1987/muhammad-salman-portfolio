@@ -1,10 +1,10 @@
+```tsx
 import { useState } from 'react';
 import {
   Building2,
   Calendar,
   MapPin,
   CheckCircle2,
-  ChevronDown,
   Briefcase
 } from 'lucide-react';
 import { WorkExperienceItem } from '../types';
@@ -21,7 +21,6 @@ export function Experience({
   isSelected = false,
   onToggleSelect
 }: ExperienceProps) {
-  // All cards collapsed by default
   const [expandedIds, setExpandedIds] = useState<Set<string>>(new Set());
 
   if (!experience || experience.length === 0) {
@@ -67,7 +66,7 @@ export function Experience({
       id="experience"
       className="relative py-20 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 transition-colors overflow-hidden"
     >
-      {/* Subtle Professional Background Image for Experience */}
+      {/* Subtle Professional Background Image */}
       <div
         className={`absolute inset-0 pointer-events-none transition-opacity duration-700 ease-in-out z-0 ${
           isSelected ? 'opacity-100' : 'opacity-0'
@@ -89,7 +88,6 @@ export function Experience({
         {/* Section Header */}
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-12">
           <div className="max-w-3xl">
-
             <span className="text-xs font-bold tracking-widest text-[#0F766E] dark:text-teal-400 uppercase">
               Career Timeline
             </span>
@@ -103,7 +101,6 @@ export function Experience({
               and accounting across manufacturing, trade, hospitality, and
               corporate sectors in Saudi Arabia and Pakistan.
             </p>
-
           </div>
 
           {/* Controls */}
@@ -151,7 +148,7 @@ export function Experience({
           </div>
         </div>
 
-        {/* Timeline Container */}
+        {/* Timeline */}
         <div className="relative border-l-2 border-slate-200 dark:border-slate-800 ml-3 sm:ml-4 pl-6 sm:pl-8 space-y-8 sm:space-y-10">
 
           {experience.map((job) => {
@@ -190,7 +187,7 @@ export function Experience({
                   }`}
                 />
 
-                {/* Card Container */}
+                {/* Card */}
                 <div
                   className={`rounded-2xl border transition-all duration-200 shadow-xs overflow-hidden ${
                     isExpanded
@@ -214,137 +211,99 @@ export function Experience({
                     className="p-5 sm:p-6 cursor-pointer select-none focus:outline-hidden focus-visible:ring-2 focus-visible:ring-[#0F766E]"
                   >
 
-                    <div className="space-y-3.5">
+                    {/* HEADER */}
+                    <div className="flex items-center justify-between gap-6">
 
-                      {/* Designation / Job Title */}
-                      <div className="flex items-center gap-2.5 flex-wrap">
+                      {/* LEFT SIDE: Title / Company / Location */}
+                      <div className="min-w-0 flex-1">
 
-                        <h3 className="text-lg sm:text-xl font-bold text-[#0F2747] dark:text-white group-hover:text-[#0F766E] dark:group-hover:text-teal-400 transition-colors">
+                        {/* Job Title */}
+                        <h3 className="text-lg sm:text-xl font-bold leading-tight text-[#0F2747] dark:text-white group-hover:text-[#0F766E] dark:group-hover:text-teal-400 transition-colors">
                           {job.role}
                         </h3>
 
-                        {job.isCurrent && (
-                          <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-[#E6F4F1] text-[#0F766E] dark:bg-teal-950/80 dark:text-teal-300 border border-[#0F766E]/30 dark:border-teal-800">
+                        {/* Company - directly below */}
+                        <div className="mt-0.5 flex items-center gap-1.5 text-xs sm:text-sm">
 
-                            <span className="w-1.5 h-1.5 rounded-full bg-[#0F766E] animate-pulse" />
-
-                            Present Role
-
+                          <span className="font-semibold leading-tight text-[#0F766E] dark:text-teal-400 flex items-center gap-1.5">
+                            <Building2 className="w-3.5 h-3.5 shrink-0" />
+                            {job.company}
                           </span>
-                        )}
 
-                      </div>
-
-                      {/* Company Name */}
-                      <div className="flex items-center gap-1.5 text-xs sm:text-sm">
-
-                        <span className="font-semibold text-[#0F766E] dark:text-teal-400 flex items-center gap-1.5">
-
-                          <Building2 className="w-3.5 h-3.5 shrink-0" />
-
-                          {job.company}
-
-                        </span>
-
-                      </div>
-
-                      {/* =====================================================
-                          HEADER
-                          Logo RIGHT SIDE
-                          Logo vertically centered
-                          Date directly below logo
-                         ===================================================== */}
-                      <div className="flex items-center justify-between gap-4 pt-1">
-
-                        {/* Location - LEFT */}
-                        <div className="flex items-center min-w-0 flex-1">
-
-                          <span className="flex items-center gap-1.5 text-xs sm:text-sm text-[#64748B] dark:text-slate-400">
-
-                            <MapPin className="w-3.5 h-3.5 shrink-0" />
-
-                            <span className="truncate">
-                              {job.location}
+                          {job.isCurrent && (
+                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-[#E6F4F1] text-[#0F766E] dark:bg-teal-950/80 dark:text-teal-300 border border-[#0F766E]/30 dark:border-teal-800">
+                              <span className="w-1.5 h-1.5 rounded-full bg-[#0F766E] animate-pulse" />
+                              Present Role
                             </span>
+                          )}
 
+                        </div>
+
+                        {/* Location - directly below company */}
+                        <div className="mt-0.5 flex items-center gap-1.5 text-xs sm:text-sm text-[#64748B] dark:text-slate-400">
+
+                          <MapPin className="w-3.5 h-3.5 shrink-0" />
+
+                          <span className="truncate">
+                            {job.location}
                           </span>
 
                         </div>
 
-                        {/* =================================================
-                            COMPANY LOGO + DATE
-                            RIGHT SIDE
-                            VERTICAL CENTER
-                           ================================================= */}
-                        <div className="flex flex-col items-center justify-center shrink-0">
+                      </div>
 
-                          {/* Company Logo */}
-                          <div className="flex items-center justify-center">
+                      {/* RIGHT SIDE: ONE LOGO + DATE */}
+                      <div className="shrink-0 flex flex-col items-center justify-center">
 
-                            {isAlyami && (
-                              <div className="flex items-center justify-center px-3 py-2 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-2xs">
+                        {/* Fixed compact logo area - SAME SIZE FOR ALL COMPANIES */}
+                        <div className="w-[170px] h-[72px] sm:w-[190px] sm:h-[78px] flex items-center justify-center">
 
-                                <img
-                                  src={alyamiLogo}
-                                  alt="Ahmed Yahya Alyami"
-                                  referrerPolicy="no-referrer"
-                                  className="h-14 sm:h-16 md:h-20 w-auto max-w-[220px] object-contain"
-                                />
+                          {isAlyami && (
+                            <img
+                              src={alyamiLogo}
+                              alt="Ahmed Yahya Alyami"
+                              referrerPolicy="no-referrer"
+                              className="max-w-[155px] sm:max-w-[175px] max-h-[58px] sm:max-h-[64px] w-auto h-auto object-contain"
+                            />
+                          )}
 
-                              </div>
-                            )}
+                          {isPalestine && (
+                            <img
+                              src="/images/palestine-hotel-logo.png"
+                              alt="Palestine Hotel Makkah"
+                              referrerPolicy="no-referrer"
+                              className="max-w-[155px] sm:max-w-[175px] max-h-[58px] sm:max-h-[64px] w-auto h-auto object-contain"
+                            />
+                          )}
 
-                            {isPalestine && (
-                              <div className="flex items-center justify-center px-3 py-2 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-2xs">
+                          {isAlRaya && (
+                            <img
+                              src="/images/alraya-logo.svg"
+                              alt="Al Raya Specialties"
+                              referrerPolicy="no-referrer"
+                              className="max-w-[155px] sm:max-w-[175px] max-h-[58px] sm:max-h-[64px] w-auto h-auto object-contain"
+                            />
+                          )}
 
-                                <img
-                                  src="/images/palestine-hotel-logo.png"
-                                  alt="Palestine Hotel Makkah"
-                                  referrerPolicy="no-referrer"
-                                  className="h-12 sm:h-14 md:h-16 w-auto max-w-[200px] object-contain"
-                                />
+                          {isHonda && (
+                            <img
+                              src="/images/honda-logo.svg"
+                              alt="Honda Canal Bank"
+                              referrerPolicy="no-referrer"
+                              className="max-w-[155px] sm:max-w-[175px] max-h-[58px] sm:max-h-[64px] w-auto h-auto object-contain"
+                            />
+                          )}
 
-                              </div>
-                            )}
+                        </div>
 
-                            {isAlRaya && (
-                              <div className="flex items-center justify-center px-3 py-2 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-2xs">
+                        {/* Date directly below logo */}
+                        <div className="mt-0.5 flex items-center justify-center gap-1.5 text-[11px] sm:text-xs font-semibold leading-tight text-[#1F2937] dark:text-slate-300 whitespace-nowrap">
 
-                                <img
-                                  src="/images/alraya-logo.svg"
-                                  alt="Al Raya Specialties"
-                                  referrerPolicy="no-referrer"
-                                  className="h-12 sm:h-14 md:h-16 w-auto max-w-[200px] object-contain"
-                                />
+                          <Calendar className="w-3.5 h-3.5 text-[#0F766E] dark:text-teal-400 shrink-0" />
 
-                              </div>
-                            )}
-
-                            {isHonda && (
-                              <div className="flex items-center justify-center px-3 py-2 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-2xs">
-
-                                <img
-                                  src="/images/honda-logo.svg"
-                                  alt="Honda Canal Bank"
-                                  referrerPolicy="no-referrer"
-                                  className="h-12 sm:h-14 md:h-16 w-auto max-w-[180px] object-contain"
-                                />
-
-                              </div>
-                            )}
-
-                          </div>
-
-                          {/* Job Period directly below logo */}
-                          <div className="mt-1.5 flex items-center justify-center gap-1.5 text-[11px] sm:text-xs font-semibold text-[#1F2937] dark:text-slate-300 whitespace-nowrap">
-
-                            <Calendar className="w-3.5 h-3.5 text-[#0F766E] dark:text-teal-400 shrink-0" />
-
-                            <span>
-                              {job.period}
-                            </span>
-
-                          </div>
+                          <span>
+                            {job.period}
+                          </span>
 
                         </div>
 
@@ -354,9 +313,7 @@ export function Experience({
 
                   </div>
 
-                  {/* =====================================================
-                      EXPANDED RESPONSIBILITIES / JD
-                     ===================================================== */}
+                  {/* EXPANDED JD */}
                   <div
                     className={`grid transition-all duration-300 ease-in-out ${
                       isExpanded
@@ -367,14 +324,7 @@ export function Experience({
 
                     <div className="overflow-hidden relative">
 
-                      {/* =================================================
-                          AHMED ALYAMI WATERMARK ONLY
-
-                          Bottom-right
-                          Large
-                          18% opacity
-                          Same as previous design
-                         ================================================= */}
+                      {/* AHMED ALYAMI WATERMARK ONLY - BOTTOM RIGHT */}
                       {isAlyami && (
                         <div
                           className={`absolute right-2 sm:right-6 md:right-8 bottom-3 sm:bottom-6 pointer-events-none select-none z-0 transition-all duration-500 ease-out ${
@@ -400,7 +350,7 @@ export function Experience({
                         </div>
                       )}
 
-                      {/* Responsibilities Content */}
+                      {/* Responsibilities */}
                       <div className="relative z-10 p-5 sm:p-6 pt-5">
 
                         <div className="flex items-center justify-between mb-3.5">
@@ -462,3 +412,4 @@ export function Experience({
     </section>
   );
 }
+```
