@@ -89,6 +89,7 @@ export function Experience({
         {/* Section Header */}
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-12">
           <div className="max-w-3xl">
+
             <span className="text-xs font-bold tracking-widest text-[#0F766E] dark:text-teal-400 uppercase">
               Career Timeline
             </span>
@@ -102,10 +103,12 @@ export function Experience({
               and accounting across manufacturing, trade, hospitality, and
               corporate sectors in Saudi Arabia and Pakistan.
             </p>
+
           </div>
 
           {/* Controls */}
           <div className="self-start sm:self-auto flex items-center gap-2 flex-wrap">
+
             {onToggleSelect && (
               <button
                 type="button"
@@ -144,6 +147,7 @@ export function Experience({
                 {allExpanded ? 'Collapse All' : 'Expand All'}
               </span>
             </button>
+
           </div>
         </div>
 
@@ -170,7 +174,10 @@ export function Experience({
               job.company.toLowerCase().includes('palestine');
 
             return (
-              <div key={job.id} className="relative group">
+              <div
+                key={job.id}
+                className="relative group"
+              >
 
                 {/* Timeline Marker */}
                 <div
@@ -206,120 +213,145 @@ export function Experience({
                     aria-expanded={isExpanded}
                     className="p-5 sm:p-6 cursor-pointer select-none focus:outline-hidden focus-visible:ring-2 focus-visible:ring-[#0F766E]"
                   >
+
                     <div className="space-y-3.5">
 
                       {/* Designation / Job Title */}
                       <div className="flex items-center gap-2.5 flex-wrap">
+
                         <h3 className="text-lg sm:text-xl font-bold text-[#0F2747] dark:text-white group-hover:text-[#0F766E] dark:group-hover:text-teal-400 transition-colors">
                           {job.role}
                         </h3>
 
                         {job.isCurrent && (
                           <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-[#E6F4F1] text-[#0F766E] dark:bg-teal-950/80 dark:text-teal-300 border border-[#0F766E]/30 dark:border-teal-800">
+
                             <span className="w-1.5 h-1.5 rounded-full bg-[#0F766E] animate-pulse" />
+
                             Present Role
+
                           </span>
                         )}
+
                       </div>
 
                       {/* Company Name */}
                       <div className="flex items-center gap-1.5 text-xs sm:text-sm">
+
                         <span className="font-semibold text-[#0F766E] dark:text-teal-400 flex items-center gap-1.5">
+
                           <Building2 className="w-3.5 h-3.5 shrink-0" />
+
                           {job.company}
+
                         </span>
+
                       </div>
 
                       {/* =====================================================
                           HEADER
-                          Location LEFT
-                          Logo + Date EXACT CENTER
+                          Logo RIGHT SIDE
+                          Logo vertically centered
+                          Date directly below logo
                          ===================================================== */}
-                      <div className="relative flex items-center justify-between pt-1">
+                      <div className="flex items-center justify-between gap-4 pt-1">
 
                         {/* Location - LEFT */}
                         <div className="flex items-center min-w-0 flex-1">
+
                           <span className="flex items-center gap-1.5 text-xs sm:text-sm text-[#64748B] dark:text-slate-400">
+
                             <MapPin className="w-3.5 h-3.5 shrink-0" />
 
                             <span className="truncate">
                               {job.location}
                             </span>
+
                           </span>
+
                         </div>
 
                         {/* =================================================
-                            LOGO + DATE
-                            EXACT CENTER OF HEADER
+                            COMPANY LOGO + DATE
+                            RIGHT SIDE
+                            VERTICAL CENTER
                            ================================================= */}
-                        <div className="absolute left-1/2 -translate-x-1/2 flex flex-col items-center justify-center">
+                        <div className="flex flex-col items-center justify-center shrink-0">
 
                           {/* Company Logo */}
                           <div className="flex items-center justify-center">
 
                             {isAlyami && (
                               <div className="flex items-center justify-center px-3 py-2 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-2xs">
+
                                 <img
                                   src={alyamiLogo}
                                   alt="Ahmed Yahya Alyami"
                                   referrerPolicy="no-referrer"
                                   className="h-14 sm:h-16 md:h-20 w-auto max-w-[220px] object-contain"
                                 />
+
                               </div>
                             )}
 
                             {isPalestine && (
                               <div className="flex items-center justify-center px-3 py-2 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-2xs">
+
                                 <img
                                   src="/images/palestine-hotel-logo.png"
                                   alt="Palestine Hotel Makkah"
                                   referrerPolicy="no-referrer"
                                   className="h-12 sm:h-14 md:h-16 w-auto max-w-[200px] object-contain"
                                 />
+
                               </div>
                             )}
 
                             {isAlRaya && (
                               <div className="flex items-center justify-center px-3 py-2 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-2xs">
+
                                 <img
                                   src="/images/alraya-logo.svg"
                                   alt="Al Raya Specialties"
                                   referrerPolicy="no-referrer"
                                   className="h-12 sm:h-14 md:h-16 w-auto max-w-[200px] object-contain"
                                 />
+
                               </div>
                             )}
 
                             {isHonda && (
                               <div className="flex items-center justify-center px-3 py-2 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-2xs">
+
                                 <img
                                   src="/images/honda-logo.svg"
                                   alt="Honda Canal Bank"
                                   referrerPolicy="no-referrer"
                                   className="h-12 sm:h-14 md:h-16 w-auto max-w-[180px] object-contain"
                                 />
+
                               </div>
                             )}
 
                           </div>
 
-                          {/* Job Period - Directly Below Logo */}
+                          {/* Job Period directly below logo */}
                           <div className="mt-1.5 flex items-center justify-center gap-1.5 text-[11px] sm:text-xs font-semibold text-[#1F2937] dark:text-slate-300 whitespace-nowrap">
+
                             <Calendar className="w-3.5 h-3.5 text-[#0F766E] dark:text-teal-400 shrink-0" />
 
                             <span>
                               {job.period}
                             </span>
+
                           </div>
 
                         </div>
 
-                        {/* Empty RIGHT area intentionally preserved
-                            so the center logo remains exactly centered */}
-                        <div className="flex-1" />
-
                       </div>
+
                     </div>
+
                   </div>
 
                   {/* =====================================================
@@ -332,17 +364,16 @@ export function Experience({
                         : 'grid-rows-[0fr] opacity-0'
                     }`}
                   >
+
                     <div className="overflow-hidden relative">
 
                       {/* =================================================
                           AHMED ALYAMI WATERMARK ONLY
 
-                          Old position:
                           Bottom-right
                           Large
                           18% opacity
-
-                          Other company JD logos removed.
+                          Same as previous design
                          ================================================= */}
                       {isAlyami && (
                         <div
@@ -353,7 +384,9 @@ export function Experience({
                           }`}
                           aria-hidden="true"
                         >
+
                           <div className="relative w-44 sm:w-72 md:w-96 lg:w-[440px] max-w-[50vw]">
+
                             <img
                               src={alyamiLogo}
                               alt="Ahmed Yahya Alyami"
@@ -361,7 +394,9 @@ export function Experience({
                               className="w-full h-auto object-contain opacity-[0.18] pointer-events-none select-none drop-shadow-xs"
                               loading="lazy"
                             />
+
                           </div>
+
                         </div>
                       )}
 
@@ -369,42 +404,60 @@ export function Experience({
                       <div className="relative z-10 p-5 sm:p-6 pt-5">
 
                         <div className="flex items-center justify-between mb-3.5">
+
                           <h4 className="text-xs font-bold uppercase tracking-wider text-[#64748B] dark:text-slate-400 flex items-center gap-2">
+
                             <span>
                               Key Responsibilities & Deliverables
                             </span>
 
                             <span className="px-2 py-0.5 rounded-md text-[10px] font-bold bg-[#F4F6F8] dark:bg-slate-800 text-[#64748B] dark:text-slate-400">
+
                               {respCount}{' '}
-                              {respCount === 1 ? 'duty' : 'duties'}
+
+                              {respCount === 1
+                                ? 'duty'
+                                : 'duties'}
+
                             </span>
+
                           </h4>
+
                         </div>
 
                         <ul className="grid grid-cols-1 md:grid-cols-2 gap-3">
+
                           {job.responsibilities.map((resp, idx) => (
                             <li
                               key={idx}
                               className="flex items-start gap-2.5 text-xs sm:text-sm text-[#1F2937] dark:text-slate-300 bg-[#F4F6F8]/90 dark:bg-slate-800/40 p-2.5 rounded-xl border border-slate-200/60 dark:border-slate-800/60 backdrop-blur-xs"
                             >
+
                               <CheckCircle2 className="w-4 h-4 text-[#0F766E] dark:text-teal-400 shrink-0 mt-0.5" />
 
                               <span className="leading-relaxed">
                                 {resp}
                               </span>
+
                             </li>
                           ))}
+
                         </ul>
 
                       </div>
+
                     </div>
+
                   </div>
 
                 </div>
+
               </div>
             );
           })}
+
         </div>
+
       </div>
     </section>
   );
