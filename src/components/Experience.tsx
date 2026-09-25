@@ -21,6 +21,7 @@ export function Experience({
   isSelected = false,
   onToggleSelect
 }: ExperienceProps) {
+  // All cards collapsed by default
   const [expandedIds, setExpandedIds] = useState<Set<string>>(new Set());
 
   if (!experience || experience.length === 0) {
@@ -88,6 +89,7 @@ export function Experience({
         {/* Section Header */}
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-12">
           <div className="max-w-3xl">
+
             <span className="text-xs font-bold tracking-widest text-[#0F766E] dark:text-teal-400 uppercase">
               Career Timeline
             </span>
@@ -101,6 +103,7 @@ export function Experience({
               and accounting across manufacturing, trade, hospitality, and
               corporate sectors in Saudi Arabia and Pakistan.
             </p>
+
           </div>
 
           {/* Controls */}
@@ -148,7 +151,7 @@ export function Experience({
           </div>
         </div>
 
-        {/* Timeline */}
+        {/* Timeline Container */}
         <div className="relative border-l-2 border-slate-200 dark:border-slate-800 ml-3 sm:ml-4 pl-6 sm:pl-8 space-y-8 sm:space-y-10">
 
           {experience.map((job) => {
@@ -187,7 +190,7 @@ export function Experience({
                   }`}
                 />
 
-                {/* Card */}
+                {/* Card Container */}
                 <div
                   className={`rounded-2xl border transition-all duration-200 shadow-xs overflow-hidden ${
                     isExpanded
@@ -208,13 +211,13 @@ export function Experience({
                       }
                     }}
                     aria-expanded={isExpanded}
-                    className="p-5 sm:p-6 cursor-pointer select-none focus:outline-hidden focus-visible:ring-2 focus-visible:ring-[#0F766E]"
+                    className="px-5 py-4 sm:px-6 sm:py-5 cursor-pointer select-none focus:outline-hidden focus-visible:ring-2 focus-visible:ring-[#0F766E]"
                   >
 
-                    {/* HEADER */}
-                    <div className="flex items-center justify-between gap-6">
+                    {/* Compact Header Layout */}
+                    <div className="flex items-center justify-between gap-5">
 
-                      {/* LEFT SIDE: Title / Company / Location */}
+                      {/* LEFT SIDE */}
                       <div className="min-w-0 flex-1">
 
                         {/* Job Title */}
@@ -222,25 +225,31 @@ export function Experience({
                           {job.role}
                         </h3>
 
-                        {/* Company - directly below */}
-                        <div className="mt-0.5 flex items-center gap-1.5 text-xs sm:text-sm">
+                        {/* Company - immediately below */}
+                        <div className="mt-0.5 flex items-center gap-2 flex-wrap">
 
-                          <span className="font-semibold leading-tight text-[#0F766E] dark:text-teal-400 flex items-center gap-1.5">
+                          <span className="font-semibold text-xs sm:text-sm leading-tight text-[#0F766E] dark:text-teal-400 flex items-center gap-1.5">
+
                             <Building2 className="w-3.5 h-3.5 shrink-0" />
+
                             {job.company}
+
                           </span>
 
                           {job.isCurrent && (
                             <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-[#E6F4F1] text-[#0F766E] dark:bg-teal-950/80 dark:text-teal-300 border border-[#0F766E]/30 dark:border-teal-800">
+
                               <span className="w-1.5 h-1.5 rounded-full bg-[#0F766E] animate-pulse" />
+
                               Present Role
+
                             </span>
                           )}
 
                         </div>
 
-                        {/* Location - directly below company */}
-                        <div className="mt-0.5 flex items-center gap-1.5 text-xs sm:text-sm text-[#64748B] dark:text-slate-400">
+                        {/* Location - immediately below company */}
+                        <div className="mt-0.5 flex items-center gap-1.5 text-xs sm:text-sm leading-tight text-[#64748B] dark:text-slate-400">
 
                           <MapPin className="w-3.5 h-3.5 shrink-0" />
 
@@ -252,18 +261,18 @@ export function Experience({
 
                       </div>
 
-                      {/* RIGHT SIDE: ONE LOGO + DATE */}
+                      {/* RIGHT SIDE */}
                       <div className="shrink-0 flex flex-col items-center justify-center">
 
-                        {/* Fixed compact logo area - SAME SIZE FOR ALL COMPANIES */}
-                        <div className="w-[170px] h-[72px] sm:w-[190px] sm:h-[78px] flex items-center justify-center">
+                        {/* ONE FIXED COMPACT LOGO AREA FOR ALL COMPANIES */}
+                        <div className="w-[155px] h-[64px] sm:w-[175px] sm:h-[68px] flex items-center justify-center">
 
                           {isAlyami && (
                             <img
                               src={alyamiLogo}
                               alt="Ahmed Yahya Alyami"
                               referrerPolicy="no-referrer"
-                              className="max-w-[155px] sm:max-w-[175px] max-h-[58px] sm:max-h-[64px] w-auto h-auto object-contain"
+                              className="max-w-[140px] sm:max-w-[160px] max-h-[52px] sm:max-h-[56px] w-auto h-auto object-contain"
                             />
                           )}
 
@@ -272,7 +281,7 @@ export function Experience({
                               src="/images/palestine-hotel-logo.png"
                               alt="Palestine Hotel Makkah"
                               referrerPolicy="no-referrer"
-                              className="max-w-[155px] sm:max-w-[175px] max-h-[58px] sm:max-h-[64px] w-auto h-auto object-contain"
+                              className="max-w-[140px] sm:max-w-[160px] max-h-[52px] sm:max-h-[56px] w-auto h-auto object-contain"
                             />
                           )}
 
@@ -281,7 +290,7 @@ export function Experience({
                               src="/images/alraya-logo.svg"
                               alt="Al Raya Specialties"
                               referrerPolicy="no-referrer"
-                              className="max-w-[155px] sm:max-w-[175px] max-h-[58px] sm:max-h-[64px] w-auto h-auto object-contain"
+                              className="max-w-[140px] sm:max-w-[160px] max-h-[52px] sm:max-h-[56px] w-auto h-auto object-contain"
                             />
                           )}
 
@@ -290,13 +299,13 @@ export function Experience({
                               src="/images/honda-logo.svg"
                               alt="Honda Canal Bank"
                               referrerPolicy="no-referrer"
-                              className="max-w-[155px] sm:max-w-[175px] max-h-[58px] sm:max-h-[64px] w-auto h-auto object-contain"
+                              className="max-w-[140px] sm:max-w-[160px] max-h-[52px] sm:max-h-[56px] w-auto h-auto object-contain"
                             />
                           )}
 
                         </div>
 
-                        {/* Date directly below logo */}
+                        {/* Date directly under logo */}
                         <div className="mt-0.5 flex items-center justify-center gap-1.5 text-[11px] sm:text-xs font-semibold leading-tight text-[#1F2937] dark:text-slate-300 whitespace-nowrap">
 
                           <Calendar className="w-3.5 h-3.5 text-[#0F766E] dark:text-teal-400 shrink-0" />
@@ -313,7 +322,7 @@ export function Experience({
 
                   </div>
 
-                  {/* EXPANDED JD */}
+                  {/* EXPANDED RESPONSIBILITIES / JD */}
                   <div
                     className={`grid transition-all duration-300 ease-in-out ${
                       isExpanded
@@ -350,7 +359,7 @@ export function Experience({
                         </div>
                       )}
 
-                      {/* Responsibilities */}
+                      {/* Responsibilities Content */}
                       <div className="relative z-10 p-5 sm:p-6 pt-5">
 
                         <div className="flex items-center justify-between mb-3.5">
