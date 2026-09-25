@@ -11,315 +11,386 @@ import alyamiLogo from '../assets/alyami-logo.png';
 
 interface ExperienceProps {
   experience: WorkExperienceItem[];
+  backgroundImage?: string;
+  showBackgroundImage?: boolean;
 }
 
-export default function Experience({ experience }: ExperienceProps) {
-  const [expandedItems, setExpandedItems] = useState<Set<number>>(new Set());
-  const [showBackground, setShowBackground] = useState(true);
+export function Experience({
+  experience,
+  backgroundImage,
+  showBackgroundImage = false,
+}: ExperienceProps) {
+  const [expandedIds, setExpandedIds] = useState<Set<string>>(new Set());
 
-  const toggleItem = (index: number) => {
-    setExpandedItems((prev) => {
+  if (!experience || experience.length === 0) {
+    return (
+      <section
+        id="experience"
+        className="py-20 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800"
+      >
+        <div className="max-w-7xl mx-auto px-4 text-center text-slate-500">
+          Experience information will be added soon.
+        </div>
+      </section>
+    );
+  }
+
+  const toggleExpand = (id: string) => {
+    setExpandedIds((prev) => {
       const next = new Set(prev);
 
-      if (next.has(index)) {
-        next.delete(index);
+      if (next.has(id)) {
+        next.delete(id);
       } else {
-        next.add(index);
+        next.add(id);
       }
 
       return next;
     });
   };
 
-  const expandAll = () => {
-    setExpandedItems(new Set(experience.map((_, index) => index)));
+  const allExpanded =
+    experience.length > 0 && expandedIds.size === experience.length;
+
+  const toggleAll = () => {
+    if (allExpanded) {
+      setExpandedIds(new Set());
+    } else {
+      setExpandedIds(new Set(experience.map((item) => item.id)));
+    }
   };
 
-  const collapseAll = () => {
-    setExpandedItems(new Set());
+  const getCompanyLogo = (company: string) => {
+    const lower = company.toLowerCase();
+
+    if (
+      lower.includes('ahmed alyami') ||
+      lower.includes('alyami group') ||
+      lower.includes('ahmed yahya alyami')
+    ) {
+      return {
+        src: alyamiLogo,
+        alt: 'Ahmed Alyami Group',
+      };
+    }
+
+    if (
+      lower.includes('palestine') ||
+      lower.includes('palestine hotel')
+    ) {
+      return {
+        src: '/images/palestine-hotel-logo.png',
+        alt: 'Palestine Hotel Makkah',
+      };
+    }
+
+    if (lower.includes('al raya')) {
+      return {
+        src: '/images/alraya-logo.svg',
+        alt: 'Al Raya Specialties',
+      };
+    }
+
+    if (lower.includes('honda')) {
+      return {
+        src: '/images/honda-logo.svg',
+        alt: 'Honda Canal Bank',
+      };
+    }
+
+    return null;
   };
 
-  if (!experience || experience.length === 0) {
+  const getRole = (item: WorkExperienceItem) => {
     return (
-      <section id="experience" className="py-20">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6">
-          <div className="rounded-2xl border border-slate-200 bg-white p-10 text-center shadow-sm dark:border-slate-700 dark:bg-slate-900">
-            <Briefcase className="mx-auto mb-4 h-10 w-10 text-slate-400" />
-            <h3 className="text-lg font-semibold text-slate-900 dark:text-white">
-              No work experience added
-            </h3>
-            <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">
-              Work experience information will appear here.
-            </p>
-          </div>
-        </div>
-      </section>
+      (item as any).role ||
+      (item as any).position ||
+      (item as any).title ||
+      (item as any).designation ||
+      'Accountant'
     );
-  }
+  };
+
+  const getCompany = (item: WorkExperienceItem) => {
+    return (
+      (item as any).company ||
+      (item as any).organization ||
+      (item as any).employer ||
+      ''
+    );
+  };
+
+  const getLocation = (item: WorkExperienceItem) => {
+    return (
+      (item as any).location ||
+      (item as any).city ||
+      ''
+    );
+  };
+
+  const getPeriod = (item: WorkExperienceItem) => {
+    return (
+      (item as any).period ||
+      (item as any).date ||
+      (item as any).duration ||
+      ''
+    );
+  };
+
+  const getResponsibilities = (item: WorkExperienceItem) => {
+    const responsibilities =
+      (item as any).responsibilities ||
+      (item as any).duties ||
+      (item as any).details ||
+      [];
+
+    if (Array.isArray(responsibilities)) {
+      return responsibilities;
+    }
+
+    if (typeof responsibilities === 'string') {
+      return responsibilities
+        .split('\n')
+        .map((text: string) => text.trim())
+        .filter(Boolean);
+    }
+
+    return [];
+  };
+
+  const getDescription = (item: WorkExperienceItem) => {
+    return (item as any).description || '';
+  };
 
   return (
-    <section id="experience" className="relative py-16 sm:py-20">
-      <div className="mx-auto max-w-6xl px-4 sm:px-6">
+    <section
+      id="experience"
+      className="relative py-20 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 transition-colors overflow-hidden"
+    >
+      {showBackgroundImage && backgroundImage && (
+        <div
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-[0.06] dark:opacity-[0.04] pointer-events-none"
+          style={{ backgroundImage: `url(${backgroundImage})` }}
+          aria-hidden="true"
+        />
+      )}
 
-        {/* Section Header */}
-        <div className="mb-8 flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
-          <div>
-            <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-slate-600 shadow-sm dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300">
-              <Briefcase className="h-3.5 w-3.5" />
-              Career
-            </div>
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Header */}
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-12">
+          <div className="max-w-3xl">
+            <span className="text-xs font-bold tracking-widest text-[#0F766E] dark:text-teal-400 uppercase">
+              Professional Journey
+            </span>
 
-            <h2 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl dark:text-white">
+            <h2 className="mt-1 text-3xl font-extrabold text-[#0F2747] dark:text-white sm:text-4xl tracking-tight">
               Professional Experience
             </h2>
 
-            <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-600 sm:text-base dark:text-slate-400">
-              A detailed overview of my professional accounting and finance
-              experience.
+            <p className="mt-2 text-sm text-[#64748B] dark:text-slate-400">
+              A progressive accounting career covering financial operations,
+              reporting, reconciliation, ERP systems, and compliance.
             </p>
           </div>
 
-          {/* Controls */}
-          <div className="flex flex-wrap items-center gap-2">
-            <button
-              type="button"
-              onClick={expandAll}
-              className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-700 transition hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300 dark:hover:bg-slate-800"
-            >
-              Expand All
-            </button>
+          <button
+            type="button"
+            onClick={toggleAll}
+            className="self-start sm:self-auto inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-semibold text-[#1F2937] dark:text-slate-300 bg-[#F4F6F8] hover:bg-[#E6F4F1] dark:bg-slate-800 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 transition-colors cursor-pointer select-none"
+          >
+            <Briefcase className="w-3.5 h-3.5 text-[#0F766E] dark:text-teal-400" />
 
-            <button
-              type="button"
-              onClick={collapseAll}
-              className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-700 transition hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300 dark:hover:bg-slate-800"
-            >
-              Collapse All
-            </button>
-
-            <button
-              type="button"
-              onClick={() => setShowBackground((prev) => !prev)}
-              className={`rounded-lg border px-3 py-2 text-xs font-semibold transition ${
-                showBackground
-                  ? 'border-slate-300 bg-slate-100 text-slate-800 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200'
-                  : 'border-slate-200 bg-white text-slate-600 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-400'
-              }`}
-            >
-              {showBackground ? 'Hide Background' : 'Show Background'}
-            </button>
-          </div>
+            <span>{allExpanded ? 'Collapse All' : 'Expand All'}</span>
+          </button>
         </div>
 
-        {/* Timeline */}
+        {/* Experience Timeline */}
         <div className="relative">
           {/* Timeline Line */}
-          <div className="absolute left-[10px] top-0 hidden h-full w-px bg-slate-200 sm:left-[15px] sm:block dark:bg-slate-700" />
+          <div
+            className="absolute left-[14px] sm:left-[20px] top-0 bottom-0 w-px bg-slate-200 dark:bg-slate-800"
+            aria-hidden="true"
+          />
 
-          <div className="space-y-5">
-            {experience.map((job, index) => {
-              const isExpanded = expandedItems.has(index);
-
-              const companyName = job.company?.toLowerCase() || '';
+          <div className="space-y-6">
+            {experience.map((item, index) => {
+              const isExpanded = expandedIds.has(item.id);
+              const company = getCompany(item);
+              const role = getRole(item);
+              const location = getLocation(item);
+              const period = getPeriod(item);
+              const logo = getCompanyLogo(company);
+              const responsibilities = getResponsibilities(item);
+              const description = getDescription(item);
 
               const isAlyami =
-                companyName.includes('ahmed alyami') ||
-                companyName.includes('alyami');
-
-              const isPalestine =
-                companyName.includes('palestine hotel') ||
-                companyName.includes('palestine');
-
-              const isAlRaya =
-                companyName.includes('al raya') ||
-                companyName.includes('alraya');
-
-              const isHonda =
-                companyName.includes('honda') ||
-                companyName.includes('canal bank');
+                company.toLowerCase().includes('alyami') ||
+                company.toLowerCase().includes('ahmed yahya');
 
               return (
                 <div
-                  key={index}
-                  className="relative pl-0 sm:pl-12"
+                  key={item.id}
+                  className="relative pl-10 sm:pl-14"
                 >
                   {/* Timeline Marker */}
-                  <div className="absolute left-[5px] top-7 z-20 hidden sm:flex">
-                    <div className="flex h-5 w-5 items-center justify-center rounded-full border-4 border-white bg-slate-700 shadow-sm dark:border-slate-950 dark:bg-slate-300">
-                      <div className="h-1.5 w-1.5 rounded-full bg-white dark:bg-slate-900" />
-                    </div>
-                  </div>
-
                   <div
-                    className={`group relative overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition-all duration-300 dark:border-slate-700 dark:bg-slate-900 ${
+                    className={`absolute left-0 top-7 sm:top-8 w-7 h-7 sm:w-10 sm:h-10 rounded-full border-4 border-white dark:border-slate-900 flex items-center justify-center z-10 transition-colors ${
                       isExpanded
-                        ? 'shadow-md'
-                        : 'hover:-translate-y-0.5 hover:shadow-md'
+                        ? 'bg-[#0F766E] dark:bg-teal-500'
+                        : 'bg-[#E6F4F1] dark:bg-teal-950 border-slate-200 dark:border-slate-800'
                     }`}
                   >
-                    {/* Optional background image */}
-                    {showBackground && job.backgroundImage && (
-                      <div className="pointer-events-none absolute inset-0 z-0">
-                        <img
-                          src={job.backgroundImage}
-                          alt=""
-                          className="h-full w-full object-cover opacity-[0.035]"
-                          aria-hidden="true"
-                        />
-                      </div>
-                    )}
+                    <span
+                      className={`w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full ${
+                        isExpanded
+                          ? 'bg-white'
+                          : 'bg-[#0F766E] dark:bg-teal-400'
+                      }`}
+                    />
+                  </div>
 
-                    {/* Header */}
-                    <button
-                      type="button"
-                      onClick={() => toggleItem(index)}
-                      className="relative z-10 w-full text-left"
+                  {/* Experience Card */}
+                  <div
+                    className={`relative rounded-2xl border overflow-hidden transition-all duration-300 ${
+                      isExpanded
+                        ? 'bg-white dark:bg-slate-800/70 border-[#0F766E]/50 dark:border-teal-500/50 ring-1 ring-[#0F766E]/20 shadow-md'
+                        : 'bg-[#F4F6F8] dark:bg-slate-800/40 border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700'
+                    }`}
+                  >
+                    {/* FIXED HEADER SIZE */}
+                    <div
+                      role="button"
+                      tabIndex={0}
+                      onClick={() => toggleExpand(item.id)}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                          e.preventDefault();
+                          toggleExpand(item.id);
+                        }
+                      }}
                       aria-expanded={isExpanded}
+                      className="relative z-10 px-5 py-4 sm:px-6 sm:py-5 cursor-pointer select-none focus:outline-hidden focus-visible:ring-2 focus-visible:ring-[#0F766E]"
                     >
-                      <div className="px-5 py-4 sm:px-6 sm:py-5">
-                        <div className="flex items-center justify-between gap-5">
+                      <div className="flex items-center justify-between gap-4">
+                        {/* LEFT: JOB INFORMATION */}
+                        <div className="min-w-0 flex-1">
+                          <h3 className="text-base sm:text-lg font-bold leading-tight text-[#0F2747] dark:text-white">
+                            {role}
+                          </h3>
 
-                          {/* Left: Job / Company / Location */}
-                          <div className="min-w-0 flex-1">
-                            <h3 className="text-base font-bold leading-tight text-slate-900 sm:text-lg dark:text-white">
-                              {job.role}
-                            </h3>
+                          <p className="text-sm font-semibold leading-tight text-[#0F766E] dark:text-teal-400 mt-0.5">
+                            {company}
+                          </p>
 
-                            <div className="mt-0.5 flex items-center gap-1.5 text-sm font-semibold leading-tight text-slate-700 dark:text-slate-300">
-                              <Building2 className="h-3.5 w-3.5 shrink-0" />
-                              <span>{job.company}</span>
+                          {location && (
+                            <div className="flex items-center gap-1.5 mt-0.5 text-xs text-[#64748B] dark:text-slate-400 leading-tight">
+                              <MapPin className="w-3.5 h-3.5 shrink-0" />
+                              <span>{location}</span>
                             </div>
+                          )}
+                        </div>
 
-                            <div className="mt-0.5 flex items-center gap-1.5 text-xs leading-tight text-slate-500 sm:text-sm dark:text-slate-400">
-                              <MapPin className="h-3.5 w-3.5 shrink-0" />
-                              <span>{job.location}</span>
-                            </div>
+                        {/* RIGHT: FIXED LOGO + DATE */}
+                        <div className="shrink-0 flex flex-col items-center justify-center">
+                          {/* Fixed logo area - NEVER changes card size */}
+                          <div className="w-[155px] h-[64px] sm:w-[175px] sm:h-[68px] flex items-center justify-center overflow-hidden">
+                            {logo ? (
+                              <img
+                                src={logo.src}
+                                alt={logo.alt}
+                                referrerPolicy="no-referrer"
+                                className="max-w-[140px] sm:max-w-[160px] max-h-[52px] sm:max-h-[56px] w-auto h-auto object-contain"
+                                loading="lazy"
+                              />
+                            ) : (
+                              <div className="w-11 h-11 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 flex items-center justify-center">
+                                <Building2 className="w-5 h-5 text-[#0F766E] dark:text-teal-400" />
+                              </div>
+                            )}
                           </div>
 
-                          {/* Right: ONE Logo + Date */}
-                          <div className="shrink-0 flex flex-col items-center justify-center">
-                            <div className="flex h-[64px] w-[155px] items-center justify-center sm:h-[68px] sm:w-[175px]">
-
-                              {/* Ahmed Alyami Group */}
-                              {isAlyami && (
-                                <img
-                                  src={alyamiLogo}
-                                  alt="Ahmed Alyami Group"
-                                  referrerPolicy="no-referrer"
-                                  className="h-auto max-h-[52px] w-auto max-w-[140px] object-contain sm:max-h-[56px] sm:max-w-[160px]"
-                                />
-                              )}
-
-                              {/* Palestine Hotel */}
-                              {isPalestine && (
-                                <img
-                                  src="/images/palestine-hotel-logo.png"
-                                  alt="Palestine Hotel"
-                                  className="h-auto max-h-[52px] w-auto max-w-[140px] object-contain sm:max-h-[56px] sm:max-w-[160px]"
-                                />
-                              )}
-
-                              {/* Al Raya */}
-                              {isAlRaya && (
-                                <img
-                                  src="/images/alraya-logo.svg"
-                                  alt="Al Raya"
-                                  className="h-auto max-h-[52px] w-auto max-w-[140px] object-contain sm:max-h-[56px] sm:max-w-[160px]"
-                                />
-                              )}
-
-                              {/* Honda */}
-                              {isHonda && (
-                                <img
-                                  src="/images/honda-logo.svg"
-                                  alt="Honda"
-                                  className="h-auto max-h-[52px] w-auto max-w-[140px] object-contain sm:max-h-[56px] sm:max-w-[160px]"
-                                />
-                              )}
-
-                              {/* Fallback icon if no company logo */}
-                              {!isAlyami &&
-                                !isPalestine &&
-                                !isAlRaya &&
-                                !isHonda && (
-                                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-slate-100 dark:bg-slate-800">
-                                    <Building2 className="h-6 w-6 text-slate-400" />
-                                  </div>
-                                )}
-                            </div>
-
-                            {/* Date directly below logo */}
-                            <div className="mt-0.5 flex items-center justify-center gap-1.5 text-[11px] font-semibold leading-tight text-slate-500 sm:text-xs dark:text-slate-400">
-                              <Calendar className="h-3.5 w-3.5 shrink-0" />
-                              <span>{job.period}</span>
-                            </div>
+                          {/* DATE - directly below logo */}
+                          <div className="mt-0.5 flex items-center justify-center gap-1.5 text-xs font-semibold text-[#64748B] dark:text-slate-400 whitespace-nowrap">
+                            <Calendar className="w-3.5 h-3.5 shrink-0" />
+                            <span>{period}</span>
                           </div>
                         </div>
                       </div>
-                    </button>
+                    </div>
 
-                    {/* Expanded Details */}
+                    {/* AHMED ALYAMI WATERMARK - ONLY THIS COMPANY */}
+                    {isAlyami && (
+                      <div
+                        id="ci9vgp"
+                        className={`absolute right-2 sm:right-6 md:right-8 bottom-3 sm:bottom-6 pointer-events-none select-none z-0 transition-all duration-500 ease-out ${
+                          isExpanded
+                            ? 'opacity-100 translate-y-0'
+                            : 'opacity-0 translate-y-2'
+                        }`}
+                        aria-hidden="true"
+                      >
+                        <div className="relative w-44 sm:w-72 md:w-96 lg:w-[440px] max-w-[50vw]">
+                          <img
+                            src={alyamiLogo}
+                            alt="Ahmed Yahya Alyami"
+                            referrerPolicy="no-referrer"
+                            className="w-full h-auto object-contain opacity-[0.18] pointer-events-none select-none drop-shadow-xs"
+                            loading="lazy"
+                          />
+                        </div>
+                      </div>
+                    )}
+
+                    {/* EXPANDED DETAILS */}
                     <div
-                      className={`relative z-10 grid transition-all duration-500 ease-out ${
+                      className={`relative z-10 grid transition-all duration-300 ease-in-out ${
                         isExpanded
-                          ? 'grid-rows-[1fr] opacity-100'
+                          ? 'grid-rows-[1fr] opacity-100 border-t border-slate-200/80 dark:border-slate-700/60'
                           : 'grid-rows-[0fr] opacity-0'
                       }`}
                     >
                       <div className="overflow-hidden">
-                        <div className="relative border-t border-slate-200 px-5 pb-6 pt-5 sm:px-6 dark:border-slate-700">
-
-                          {/* Ahmed Alyami watermark ONLY */}
-                          {isAlyami && (
-                            <div
-                              className={`pointer-events-none absolute bottom-3 right-2 z-0 select-none transition-all duration-500 ease-out sm:bottom-6 sm:right-6 md:right-8 ${
-                                isExpanded
-                                  ? 'translate-y-0 opacity-100'
-                                  : 'translate-y-2 opacity-0'
-                              }`}
-                              aria-hidden="true"
-                            >
-                              <div className="relative w-44 max-w-[50vw] sm:w-72 md:w-96 lg:w-[440px]">
-                                <img
-                                  src={alyamiLogo}
-                                  alt="Ahmed Yahya Alyami"
-                                  referrerPolicy="no-referrer"
-                                  className="pointer-events-none h-auto w-full select-none object-contain opacity-[0.18] drop-shadow-xs"
-                                  loading="lazy"
-                                />
-                              </div>
-                            </div>
+                        <div className="p-5 sm:p-6 pt-4">
+                          {description && (
+                            <p className="text-sm text-[#1F2937] dark:text-slate-300 leading-relaxed font-normal mb-5">
+                              {description}
+                            </p>
                           )}
 
-                          {/* Responsibilities */}
-                          <div className="relative z-10">
-                            <div className="mb-4 flex items-center gap-2">
-                              <CheckCircle2 className="h-4 w-4 text-slate-500 dark:text-slate-400" />
-
-                              <h4 className="text-sm font-bold text-slate-800 dark:text-slate-200">
-                                Key Responsibilities
-                              </h4>
-                            </div>
-
-                            <div className="grid gap-x-8 gap-y-2 sm:grid-cols-2">
-                              {job.responsibilities?.map(
-                                (responsibility, responsibilityIndex) => (
+                          {responsibilities.length > 0 && (
+                            <div className="space-y-3">
+                              {responsibilities.map(
+                                (responsibility: string, responsibilityIndex: number) => (
                                   <div
-                                    key={responsibilityIndex}
-                                    className="flex items-start gap-2 text-sm leading-6 text-slate-600 dark:text-slate-400"
+                                    key={`${item.id}-responsibility-${responsibilityIndex}`}
+                                    className="flex items-start gap-2.5"
                                   >
-                                    <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-slate-400 dark:bg-slate-500" />
+                                    <CheckCircle2 className="w-4 h-4 mt-0.5 shrink-0 text-[#0F766E] dark:text-teal-400" />
 
-                                    <span>{responsibility}</span>
+                                    <p className="text-sm text-[#334155] dark:text-slate-300 leading-relaxed">
+                                      {responsibility}
+                                    </p>
                                   </div>
                                 )
                               )}
                             </div>
-                          </div>
+                          )}
+
+                          {!description && responsibilities.length === 0 && (
+                            <p className="text-sm text-[#64748B] dark:text-slate-400">
+                              Professional experience details available in the
+                              CV.
+                            </p>
+                          )}
                         </div>
                       </div>
                     </div>
                   </div>
+
+                  {/* Timeline continuation spacing */}
+                  {index < experience.length - 1 && (
+                    <div className="h-0" />
+                  )}
                 </div>
               );
             })}
