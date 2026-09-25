@@ -1,424 +1,331 @@
-```tsx
 import { useState } from 'react';
 import {
   Building2,
   Calendar,
   MapPin,
   CheckCircle2,
-  Briefcase
+  Briefcase,
 } from 'lucide-react';
 import { WorkExperienceItem } from '../types';
 import alyamiLogo from '../assets/alyami-logo.png';
 
 interface ExperienceProps {
   experience: WorkExperienceItem[];
-  isSelected?: boolean;
-  onToggleSelect?: () => void;
 }
 
-export function Experience({
-  experience,
-  isSelected = false,
-  onToggleSelect
-}: ExperienceProps) {
-  // All cards collapsed by default
-  const [expandedIds, setExpandedIds] = useState<Set<string>>(new Set());
+export default function Experience({ experience }: ExperienceProps) {
+  const [expandedItems, setExpandedItems] = useState<Set<number>>(new Set());
+  const [showBackground, setShowBackground] = useState(true);
 
-  if (!experience || experience.length === 0) {
-    return (
-      <section
-        id="experience"
-        className="py-20 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800"
-      >
-        <div className="max-w-7xl mx-auto px-4 text-center text-slate-500">
-          Information will be added soon.
-        </div>
-      </section>
-    );
-  }
-
-  const toggleExpand = (id: string) => {
-    setExpandedIds((prev) => {
+  const toggleItem = (index: number) => {
+    setExpandedItems((prev) => {
       const next = new Set(prev);
 
-      if (next.has(id)) {
-        next.delete(id);
+      if (next.has(index)) {
+        next.delete(index);
       } else {
-        next.add(id);
+        next.add(index);
       }
 
       return next;
     });
   };
 
-  const allExpanded =
-    experience.length > 0 && expandedIds.size === experience.length;
-
-  const toggleAll = () => {
-    if (allExpanded) {
-      setExpandedIds(new Set());
-    } else {
-      setExpandedIds(new Set(experience.map((j) => j.id)));
-    }
+  const expandAll = () => {
+    setExpandedItems(new Set(experience.map((_, index) => index)));
   };
 
+  const collapseAll = () => {
+    setExpandedItems(new Set());
+  };
+
+  if (!experience || experience.length === 0) {
+    return (
+      <section id="experience" className="py-20">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6">
+          <div className="rounded-2xl border border-slate-200 bg-white p-10 text-center shadow-sm dark:border-slate-700 dark:bg-slate-900">
+            <Briefcase className="mx-auto mb-4 h-10 w-10 text-slate-400" />
+            <h3 className="text-lg font-semibold text-slate-900 dark:text-white">
+              No work experience added
+            </h3>
+            <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">
+              Work experience information will appear here.
+            </p>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
   return (
-    <section
-      id="experience"
-      className="relative py-20 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 transition-colors overflow-hidden"
-    >
-      {/* Subtle Professional Background Image */}
-      <div
-        className={`absolute inset-0 pointer-events-none transition-opacity duration-700 ease-in-out z-0 ${
-          isSelected ? 'opacity-100' : 'opacity-0'
-        }`}
-        aria-hidden="true"
-      >
-        <img
-          src="/images/experience_background.jpg"
-          alt=""
-          className="w-full h-full object-cover object-center opacity-[0.18] dark:opacity-[0.14] filter contrast-105 select-none"
-          loading="lazy"
-        />
-
-        <div className="absolute inset-0 bg-gradient-to-b from-white/85 via-white/35 to-white/85 dark:from-slate-900/85 dark:via-slate-900/45 dark:to-slate-900/85" />
-      </div>
-
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="experience" className="relative py-16 sm:py-20">
+      <div className="mx-auto max-w-6xl px-4 sm:px-6">
 
         {/* Section Header */}
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-12">
-          <div className="max-w-3xl">
+        <div className="mb-8 flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-slate-600 shadow-sm dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300">
+              <Briefcase className="h-3.5 w-3.5" />
+              Career
+            </div>
 
-            <span className="text-xs font-bold tracking-widest text-[#0F766E] dark:text-teal-400 uppercase">
-              Career Timeline
-            </span>
-
-            <h2 className="mt-1 text-3xl font-extrabold text-[#0F2747] dark:text-white sm:text-4xl tracking-tight">
-              Work Experience
+            <h2 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl dark:text-white">
+              Professional Experience
             </h2>
 
-            <p className="mt-2 text-sm text-[#64748B] dark:text-slate-400">
-              A sustained record of financial management, regulatory adherence,
-              and accounting across manufacturing, trade, hospitality, and
-              corporate sectors in Saudi Arabia and Pakistan.
+            <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-600 sm:text-base dark:text-slate-400">
+              A detailed overview of my professional accounting and finance
+              experience.
             </p>
-
           </div>
 
           {/* Controls */}
-          <div className="self-start sm:self-auto flex items-center gap-2 flex-wrap">
-
-            {onToggleSelect && (
-              <button
-                type="button"
-                onClick={onToggleSelect}
-                className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all border cursor-pointer ${
-                  isSelected
-                    ? 'bg-[#E6F4F1] text-[#0F766E] border-[#0F766E]/40 dark:bg-teal-950/70 dark:text-teal-300 dark:border-teal-700/60 shadow-2xs'
-                    : 'bg-[#F4F6F8] text-slate-600 border-slate-200 dark:bg-slate-800 dark:text-slate-400 dark:border-slate-700 hover:text-slate-900 dark:hover:text-white'
-                }`}
-                title="Toggle subtle background image effect"
-              >
-                <span
-                  className={`w-1.5 h-1.5 rounded-full transition-colors ${
-                    isSelected
-                      ? 'bg-[#0F766E] dark:bg-teal-400 animate-pulse'
-                      : 'bg-slate-400'
-                  }`}
-                />
-
-                <span>
-                  {isSelected
-                    ? 'Background: Active'
-                    : 'Background: Inactive'}
-                </span>
-              </button>
-            )}
+          <div className="flex flex-wrap items-center gap-2">
+            <button
+              type="button"
+              onClick={expandAll}
+              className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-700 transition hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300 dark:hover:bg-slate-800"
+            >
+              Expand All
+            </button>
 
             <button
               type="button"
-              onClick={toggleAll}
-              className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-semibold text-[#1F2937] dark:text-slate-300 bg-[#F4F6F8] hover:bg-[#E6F4F1] dark:bg-slate-800 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 transition-colors cursor-pointer"
+              onClick={collapseAll}
+              className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-700 transition hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300 dark:hover:bg-slate-800"
             >
-              <Briefcase className="w-3.5 h-3.5 text-[#0F766E] dark:text-teal-400" />
-
-              <span>
-                {allExpanded ? 'Collapse All' : 'Expand All'}
-              </span>
+              Collapse All
             </button>
 
+            <button
+              type="button"
+              onClick={() => setShowBackground((prev) => !prev)}
+              className={`rounded-lg border px-3 py-2 text-xs font-semibold transition ${
+                showBackground
+                  ? 'border-slate-300 bg-slate-100 text-slate-800 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200'
+                  : 'border-slate-200 bg-white text-slate-600 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-400'
+              }`}
+            >
+              {showBackground ? 'Hide Background' : 'Show Background'}
+            </button>
           </div>
         </div>
 
-        {/* Timeline Container */}
-        <div className="relative border-l-2 border-slate-200 dark:border-slate-800 ml-3 sm:ml-4 pl-6 sm:pl-8 space-y-8 sm:space-y-10">
+        {/* Timeline */}
+        <div className="relative">
+          {/* Timeline Line */}
+          <div className="absolute left-[10px] top-0 hidden h-full w-px bg-slate-200 sm:left-[15px] sm:block dark:bg-slate-700" />
 
-          {experience.map((job) => {
-            const isExpanded = expandedIds.has(job.id);
-            const respCount = job.responsibilities?.length || 0;
+          <div className="space-y-5">
+            {experience.map((job, index) => {
+              const isExpanded = expandedItems.has(index);
 
-            const isAlyami =
-              job.id === 'job-1' ||
-              job.company.toLowerCase().includes('alyami');
+              const companyName = job.company?.toLowerCase() || '';
 
-            const isHonda =
-              job.company.toLowerCase().includes('honda');
+              const isAlyami =
+                companyName.includes('ahmed alyami') ||
+                companyName.includes('alyami');
 
-            const isAlRaya =
-              job.id === 'job-4' ||
-              job.company.toLowerCase().includes('raya');
+              const isPalestine =
+                companyName.includes('palestine hotel') ||
+                companyName.includes('palestine');
 
-            const isPalestine =
-              job.id === 'job-3' ||
-              job.company.toLowerCase().includes('palestine');
+              const isAlRaya =
+                companyName.includes('al raya') ||
+                companyName.includes('alraya');
 
-            return (
-              <div
-                key={job.id}
-                className="relative group"
-              >
+              const isHonda =
+                companyName.includes('honda') ||
+                companyName.includes('canal bank');
 
-                {/* Timeline Marker */}
+              return (
                 <div
-                  className={`absolute -left-[31px] sm:-left-[39px] top-6 w-4 h-4 rounded-full border-2 transition-all ${
-                    job.isCurrent
-                      ? 'bg-[#0F766E] border-[#E6F4F1] dark:border-teal-950 ring-4 ring-[#0F766E]/20'
-                      : isExpanded
-                        ? 'bg-[#0F766E] border-[#E6F4F1] dark:border-teal-800 ring-4 ring-[#0F766E]/20'
-                        : 'bg-white dark:bg-slate-900 border-slate-400 dark:border-slate-600 group-hover:border-[#0F766E] group-hover:scale-110'
-                  }`}
-                />
-
-                {/* Card Container */}
-                <div
-                  className={`rounded-2xl border transition-all duration-200 shadow-xs overflow-hidden ${
-                    isExpanded
-                      ? 'border-[#0F766E]/40 dark:border-teal-500/40 ring-1 ring-[#0F766E]/20 bg-white dark:bg-slate-800/60 shadow-sm'
-                      : 'bg-[#F4F6F8] dark:bg-slate-800/40 border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700 hover:bg-slate-100/70 dark:hover:bg-slate-800/50'
-                  }`}
+                  key={index}
+                  className="relative pl-0 sm:pl-12"
                 >
-
-                  {/* Clickable Header */}
-                  <div
-                    role="button"
-                    tabIndex={0}
-                    onClick={() => toggleExpand(job.id)}
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter' || e.key === ' ') {
-                        e.preventDefault();
-                        toggleExpand(job.id);
-                      }
-                    }}
-                    aria-expanded={isExpanded}
-                    className="px-5 py-4 sm:px-6 sm:py-5 cursor-pointer select-none focus:outline-hidden focus-visible:ring-2 focus-visible:ring-[#0F766E]"
-                  >
-
-                    {/* Compact Header Layout */}
-                    <div className="flex items-center justify-between gap-5">
-
-                      {/* LEFT SIDE */}
-                      <div className="min-w-0 flex-1">
-
-                        {/* Job Title */}
-                        <h3 className="text-lg sm:text-xl font-bold leading-tight text-[#0F2747] dark:text-white group-hover:text-[#0F766E] dark:group-hover:text-teal-400 transition-colors">
-                          {job.role}
-                        </h3>
-
-                        {/* Company - immediately below */}
-                        <div className="mt-0.5 flex items-center gap-2 flex-wrap">
-
-                          <span className="font-semibold text-xs sm:text-sm leading-tight text-[#0F766E] dark:text-teal-400 flex items-center gap-1.5">
-
-                            <Building2 className="w-3.5 h-3.5 shrink-0" />
-
-                            {job.company}
-
-                          </span>
-
-                          {job.isCurrent && (
-                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-[#E6F4F1] text-[#0F766E] dark:bg-teal-950/80 dark:text-teal-300 border border-[#0F766E]/30 dark:border-teal-800">
-
-                              <span className="w-1.5 h-1.5 rounded-full bg-[#0F766E] animate-pulse" />
-
-                              Present Role
-
-                            </span>
-                          )}
-
-                        </div>
-
-                        {/* Location - immediately below company */}
-                        <div className="mt-0.5 flex items-center gap-1.5 text-xs sm:text-sm leading-tight text-[#64748B] dark:text-slate-400">
-
-                          <MapPin className="w-3.5 h-3.5 shrink-0" />
-
-                          <span className="truncate">
-                            {job.location}
-                          </span>
-
-                        </div>
-
-                      </div>
-
-                      {/* RIGHT SIDE */}
-                      <div className="shrink-0 flex flex-col items-center justify-center">
-
-                        {/* ONE FIXED COMPACT LOGO AREA FOR ALL COMPANIES */}
-                        <div className="w-[155px] h-[64px] sm:w-[175px] sm:h-[68px] flex items-center justify-center">
-
-                          {isAlyami && (
-                            <img
-                              src={alyamiLogo}
-                              alt="Ahmed Yahya Alyami"
-                              referrerPolicy="no-referrer"
-                              className="max-w-[140px] sm:max-w-[160px] max-h-[52px] sm:max-h-[56px] w-auto h-auto object-contain"
-                            />
-                          )}
-
-                          {isPalestine && (
-                            <img
-                              src="/images/palestine-hotel-logo.png"
-                              alt="Palestine Hotel Makkah"
-                              referrerPolicy="no-referrer"
-                              className="max-w-[140px] sm:max-w-[160px] max-h-[52px] sm:max-h-[56px] w-auto h-auto object-contain"
-                            />
-                          )}
-
-                          {isAlRaya && (
-                            <img
-                              src="/images/alraya-logo.svg"
-                              alt="Al Raya Specialties"
-                              referrerPolicy="no-referrer"
-                              className="max-w-[140px] sm:max-w-[160px] max-h-[52px] sm:max-h-[56px] w-auto h-auto object-contain"
-                            />
-                          )}
-
-                          {isHonda && (
-                            <img
-                              src="/images/honda-logo.svg"
-                              alt="Honda Canal Bank"
-                              referrerPolicy="no-referrer"
-                              className="max-w-[140px] sm:max-w-[160px] max-h-[52px] sm:max-h-[56px] w-auto h-auto object-contain"
-                            />
-                          )}
-
-                        </div>
-
-                        {/* Date directly under logo */}
-                        <div className="mt-0.5 flex items-center justify-center gap-1.5 text-[11px] sm:text-xs font-semibold leading-tight text-[#1F2937] dark:text-slate-300 whitespace-nowrap">
-
-                          <Calendar className="w-3.5 h-3.5 text-[#0F766E] dark:text-teal-400 shrink-0" />
-
-                          <span>
-                            {job.period}
-                          </span>
-
-                        </div>
-
-                      </div>
-
+                  {/* Timeline Marker */}
+                  <div className="absolute left-[5px] top-7 z-20 hidden sm:flex">
+                    <div className="flex h-5 w-5 items-center justify-center rounded-full border-4 border-white bg-slate-700 shadow-sm dark:border-slate-950 dark:bg-slate-300">
+                      <div className="h-1.5 w-1.5 rounded-full bg-white dark:bg-slate-900" />
                     </div>
-
                   </div>
 
-                  {/* EXPANDED RESPONSIBILITIES / JD */}
                   <div
-                    className={`grid transition-all duration-300 ease-in-out ${
+                    className={`group relative overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition-all duration-300 dark:border-slate-700 dark:bg-slate-900 ${
                       isExpanded
-                        ? 'grid-rows-[1fr] opacity-100 border-t border-slate-200/90 dark:border-slate-700/70 bg-white dark:bg-slate-900/40'
-                        : 'grid-rows-[0fr] opacity-0'
+                        ? 'shadow-md'
+                        : 'hover:-translate-y-0.5 hover:shadow-md'
                     }`}
                   >
-
-                    <div className="overflow-hidden relative">
-
-                      {/* AHMED ALYAMI WATERMARK ONLY - BOTTOM RIGHT */}
-                      {isAlyami && (
-                        <div
-                          className={`absolute right-2 sm:right-6 md:right-8 bottom-3 sm:bottom-6 pointer-events-none select-none z-0 transition-all duration-500 ease-out ${
-                            isExpanded
-                              ? 'opacity-100 translate-y-0'
-                              : 'opacity-0 translate-y-2'
-                          }`}
+                    {/* Optional background image */}
+                    {showBackground && job.backgroundImage && (
+                      <div className="pointer-events-none absolute inset-0 z-0">
+                        <img
+                          src={job.backgroundImage}
+                          alt=""
+                          className="h-full w-full object-cover opacity-[0.035]"
                           aria-hidden="true"
-                        >
+                        />
+                      </div>
+                    )}
 
-                          <div className="relative w-44 sm:w-72 md:w-96 lg:w-[440px] max-w-[50vw]">
+                    {/* Header */}
+                    <button
+                      type="button"
+                      onClick={() => toggleItem(index)}
+                      className="relative z-10 w-full text-left"
+                      aria-expanded={isExpanded}
+                    >
+                      <div className="px-5 py-4 sm:px-6 sm:py-5">
+                        <div className="flex items-center justify-between gap-5">
 
-                            <img
-                              src={alyamiLogo}
-                              alt="Ahmed Yahya Alyami"
-                              referrerPolicy="no-referrer"
-                              className="w-full h-auto object-contain opacity-[0.18] pointer-events-none select-none drop-shadow-xs"
-                              loading="lazy"
-                            />
+                          {/* Left: Job / Company / Location */}
+                          <div className="min-w-0 flex-1">
+                            <h3 className="text-base font-bold leading-tight text-slate-900 sm:text-lg dark:text-white">
+                              {job.role}
+                            </h3>
 
+                            <div className="mt-0.5 flex items-center gap-1.5 text-sm font-semibold leading-tight text-slate-700 dark:text-slate-300">
+                              <Building2 className="h-3.5 w-3.5 shrink-0" />
+                              <span>{job.company}</span>
+                            </div>
+
+                            <div className="mt-0.5 flex items-center gap-1.5 text-xs leading-tight text-slate-500 sm:text-sm dark:text-slate-400">
+                              <MapPin className="h-3.5 w-3.5 shrink-0" />
+                              <span>{job.location}</span>
+                            </div>
                           </div>
 
+                          {/* Right: ONE Logo + Date */}
+                          <div className="shrink-0 flex flex-col items-center justify-center">
+                            <div className="flex h-[64px] w-[155px] items-center justify-center sm:h-[68px] sm:w-[175px]">
+
+                              {/* Ahmed Alyami Group */}
+                              {isAlyami && (
+                                <img
+                                  src={alyamiLogo}
+                                  alt="Ahmed Alyami Group"
+                                  referrerPolicy="no-referrer"
+                                  className="h-auto max-h-[52px] w-auto max-w-[140px] object-contain sm:max-h-[56px] sm:max-w-[160px]"
+                                />
+                              )}
+
+                              {/* Palestine Hotel */}
+                              {isPalestine && (
+                                <img
+                                  src="/images/palestine-hotel-logo.png"
+                                  alt="Palestine Hotel"
+                                  className="h-auto max-h-[52px] w-auto max-w-[140px] object-contain sm:max-h-[56px] sm:max-w-[160px]"
+                                />
+                              )}
+
+                              {/* Al Raya */}
+                              {isAlRaya && (
+                                <img
+                                  src="/images/alraya-logo.svg"
+                                  alt="Al Raya"
+                                  className="h-auto max-h-[52px] w-auto max-w-[140px] object-contain sm:max-h-[56px] sm:max-w-[160px]"
+                                />
+                              )}
+
+                              {/* Honda */}
+                              {isHonda && (
+                                <img
+                                  src="/images/honda-logo.svg"
+                                  alt="Honda"
+                                  className="h-auto max-h-[52px] w-auto max-w-[140px] object-contain sm:max-h-[56px] sm:max-w-[160px]"
+                                />
+                              )}
+
+                              {/* Fallback icon if no company logo */}
+                              {!isAlyami &&
+                                !isPalestine &&
+                                !isAlRaya &&
+                                !isHonda && (
+                                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-slate-100 dark:bg-slate-800">
+                                    <Building2 className="h-6 w-6 text-slate-400" />
+                                  </div>
+                                )}
+                            </div>
+
+                            {/* Date directly below logo */}
+                            <div className="mt-0.5 flex items-center justify-center gap-1.5 text-[11px] font-semibold leading-tight text-slate-500 sm:text-xs dark:text-slate-400">
+                              <Calendar className="h-3.5 w-3.5 shrink-0" />
+                              <span>{job.period}</span>
+                            </div>
+                          </div>
                         </div>
-                      )}
-
-                      {/* Responsibilities Content */}
-                      <div className="relative z-10 p-5 sm:p-6 pt-5">
-
-                        <div className="flex items-center justify-between mb-3.5">
-
-                          <h4 className="text-xs font-bold uppercase tracking-wider text-[#64748B] dark:text-slate-400 flex items-center gap-2">
-
-                            <span>
-                              Key Responsibilities & Deliverables
-                            </span>
-
-                            <span className="px-2 py-0.5 rounded-md text-[10px] font-bold bg-[#F4F6F8] dark:bg-slate-800 text-[#64748B] dark:text-slate-400">
-
-                              {respCount}{' '}
-
-                              {respCount === 1
-                                ? 'duty'
-                                : 'duties'}
-
-                            </span>
-
-                          </h4>
-
-                        </div>
-
-                        <ul className="grid grid-cols-1 md:grid-cols-2 gap-3">
-
-                          {job.responsibilities.map((resp, idx) => (
-                            <li
-                              key={idx}
-                              className="flex items-start gap-2.5 text-xs sm:text-sm text-[#1F2937] dark:text-slate-300 bg-[#F4F6F8]/90 dark:bg-slate-800/40 p-2.5 rounded-xl border border-slate-200/60 dark:border-slate-800/60 backdrop-blur-xs"
-                            >
-
-                              <CheckCircle2 className="w-4 h-4 text-[#0F766E] dark:text-teal-400 shrink-0 mt-0.5" />
-
-                              <span className="leading-relaxed">
-                                {resp}
-                              </span>
-
-                            </li>
-                          ))}
-
-                        </ul>
-
                       </div>
+                    </button>
 
+                    {/* Expanded Details */}
+                    <div
+                      className={`relative z-10 grid transition-all duration-500 ease-out ${
+                        isExpanded
+                          ? 'grid-rows-[1fr] opacity-100'
+                          : 'grid-rows-[0fr] opacity-0'
+                      }`}
+                    >
+                      <div className="overflow-hidden">
+                        <div className="relative border-t border-slate-200 px-5 pb-6 pt-5 sm:px-6 dark:border-slate-700">
+
+                          {/* Ahmed Alyami watermark ONLY */}
+                          {isAlyami && (
+                            <div
+                              className={`pointer-events-none absolute bottom-3 right-2 z-0 select-none transition-all duration-500 ease-out sm:bottom-6 sm:right-6 md:right-8 ${
+                                isExpanded
+                                  ? 'translate-y-0 opacity-100'
+                                  : 'translate-y-2 opacity-0'
+                              }`}
+                              aria-hidden="true"
+                            >
+                              <div className="relative w-44 max-w-[50vw] sm:w-72 md:w-96 lg:w-[440px]">
+                                <img
+                                  src={alyamiLogo}
+                                  alt="Ahmed Yahya Alyami"
+                                  referrerPolicy="no-referrer"
+                                  className="pointer-events-none h-auto w-full select-none object-contain opacity-[0.18] drop-shadow-xs"
+                                  loading="lazy"
+                                />
+                              </div>
+                            </div>
+                          )}
+
+                          {/* Responsibilities */}
+                          <div className="relative z-10">
+                            <div className="mb-4 flex items-center gap-2">
+                              <CheckCircle2 className="h-4 w-4 text-slate-500 dark:text-slate-400" />
+
+                              <h4 className="text-sm font-bold text-slate-800 dark:text-slate-200">
+                                Key Responsibilities
+                              </h4>
+                            </div>
+
+                            <div className="grid gap-x-8 gap-y-2 sm:grid-cols-2">
+                              {job.responsibilities?.map(
+                                (responsibility, responsibilityIndex) => (
+                                  <div
+                                    key={responsibilityIndex}
+                                    className="flex items-start gap-2 text-sm leading-6 text-slate-600 dark:text-slate-400"
+                                  >
+                                    <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-slate-400 dark:bg-slate-500" />
+
+                                    <span>{responsibility}</span>
+                                  </div>
+                                )
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                     </div>
-
                   </div>
-
                 </div>
-
-              </div>
-            );
-          })}
-
+              );
+            })}
+          </div>
         </div>
-
       </div>
     </section>
   );
 }
-```
